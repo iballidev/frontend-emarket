@@ -1,0 +1,10 @@
+.product-card {
+    // background-color: var(--clr-accent-300);
+    background-color: var(--clr-neutral-500);
+    .title{
+        height: 38px;
+        // background-color: green;
+        line-height: 19px;
+        overflow-y: hidden;
+    }
+}

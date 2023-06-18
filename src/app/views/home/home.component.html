@@ -1,0 +1,40 @@
+<!-- <p>home works!</p> -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card border-0 rounded-0">
+                <div class="card-body">
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" aria-current="page" href="#">Active</a>
+                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link disabled">Disabled</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="card border-0 bg-accent-300 rounded-0">
+                <div class="card-body">
+                    <div class="row g-2 g-md-4">
+                        <div class="col-6 col-md-3" *ngFor="let item of [1, 2, 3, 4, 5]">
+                            <a href="">
+                                <div class="product-card | card border-0">
+                                    <div class="p-3">
+                                        <img src="../../../assets/images/s-l300.jpg" class="card-img-top" alt="...">
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text title fs-100">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        </p>
+                                        <p class="fw-bold fs-200">{{200 | currency:"INR"}}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
