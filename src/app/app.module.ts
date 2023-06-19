@@ -8,6 +8,11 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { LayoutComponent } from './layout/layout.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgBootstrapModule } from './ng-bootstrap/ng-bootstrap.module';
+import { HeroSliderComponent } from './components/hero-slider/hero-slider.component';
+import { HeroOwlCarouselComponent } from './components/hero-owl-carousel/hero-owl-carousel.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -15,12 +20,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HomeComponent,
     ToolbarComponent,
     PageNotFoundComponent,
-    LayoutComponent
+    LayoutComponent,
+    HeroOwlCarouselComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    NgBootstrapModule,
+    HeroSliderComponent,
+    CarouselModule,
+    BrowserAnimationsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

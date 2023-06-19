@@ -43,6 +43,16 @@
   color: var(--clr-alt-200);
 }
 
+
+.text-danger-400 {
+  color: var(--clr-danger-400);
+}
+
+.text-danger-500 {
+  color: var(--clr-danger-500);
+}
+
+
 .base-text-color-100 {
   color: var(--base-text-color-100);
 }
@@ -75,6 +85,15 @@
 .bg-accent-500 {
   background-color: var(--clr-accent-500);
 }
+
+.bg-danger-400 {
+  background-color: var(--clr-danger-400);
+}
+
+.bg-danger-500 {
+  background-color: var(--clr-danger-500);
+}
+
 
 .fw-light {
   font-weight: var(--fw-light);

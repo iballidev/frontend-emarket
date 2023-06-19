@@ -18,12 +18,8 @@
   --clr-secondary-400: hsl(223, 70%, 63%); //#5F84E3;
   --clr-secondary-500: hsl(277, 93%, 29%); //#59058D;
 
-  
   --clr-danger-400: hsl(12, 82%, 50%); //#e84118;
   --clr-danger-500: hsl(11, 80%, 42%); //#c23616;
-  
-
-  
 
   --base-text-color-100: var(--clr-accent-700);
   --base-text-color-200: var(--clr-accent-600);
@@ -32,6 +28,7 @@
 
   /* TYPOGRAPHY */
   @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Macondo&display=swap");
 
   // @font-face {
   //   font-family: "klavika_basicregular";
@@ -57,7 +54,7 @@
 
   --ff-primary: "Open Sans", sans-serif;
   --ff-secondary: "Poppins", sans-serif;
-  //   --ff-accent: ;
+  --ff-accent: "Macondo", cursive;
   --ff-body: var(--ff-primary);
   //   --ff-heading: var(--ff-accent);
 
