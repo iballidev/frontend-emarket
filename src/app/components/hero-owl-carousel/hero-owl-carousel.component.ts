@@ -38,8 +38,10 @@ export class HeroOwlCarouselComponent implements OnInit {
     touchDrag: false,
     pullDrag: false,
     dots: false,
-    // navSpeed: 700,
+    navSpeed: 700,
     navText: ['', ''],
+    autoplay: true,
+    animateOut: 'fadeOut',
     items: 1,
     // responsive: {
     //   0: {

@@ -1,6 +1,22 @@
 .product-card {
     // background-color: var(--clr-accent-300);
     background-color: var(--clr-neutral-500);
+    .image-wrap{
+        max-height: 230px;
+        overflow: hidden;
+        img{
+            border-radius: 0;
+        }
+    }
+    &.category{
+        .image-wrap{
+            max-height: 250px;
+            // overflow: hidden;
+            // img{
+            //     border-radius: 0;
+            // }
+        }
+    }
     .title{
         height: 38px;
         // background-color: green;
