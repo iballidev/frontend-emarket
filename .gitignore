@@ -42,8 +42,3 @@ testem.log
 Thumbs.db
 
 # my ignores
-src/app/auth/auth.component.html
-src/app/auth/auth.component.scss
-src/app/auth/auth.component.spec.ts
-src/app/auth/auth.component.ts
-src/sass/_components/_form-controls.scss
