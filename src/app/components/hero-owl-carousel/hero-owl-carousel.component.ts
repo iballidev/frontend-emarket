@@ -7,8 +7,10 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styleUrls: ['./hero-owl-carousel.component.scss'],
 })
 export class HeroOwlCarouselComponent implements OnInit {
-  imgBanner1 = '../../../assets/images/Frame-674.jpg';
-  imgBanner2 = '../../../assets/images/Frame-675.jpg';
+  imgBanner1: string = '../../../assets/images/hero-banner-1.jpg';
+  imgBanner2: string = '../../../assets/images/hero-banner-2.jpg';
+  imgBanner3: string = '../../../assets/images/hero-banner-3.jpg';
+  imgBanner4: string =  '../../../assets/images/hero-banner-4.jpg';
   // images = [this.imgBanner1, this.imgBanner2];
   sliderImages = [
     {
@@ -26,6 +28,26 @@ export class HeroOwlCarouselComponent implements OnInit {
       src: this.imgBanner2,
       alt: '',
       discription: {
+        title: 'Children\'s Toys',
+        tagline: 'Toy Stories',
+      },
+      salesLabel: 'New Summer Collection',
+    },
+    {
+      id: '3',
+      src: this.imgBanner3,
+      alt: '',
+      discription: {
+        title: 'Women\'s Wears',
+        tagline: 'Boutique',
+      },
+      salesLabel: 'New Summer Collection',
+    },
+    {
+      id: '4',
+      src: this.imgBanner4,
+      alt: '',
+      discription: {
         title: 'Men\'s Fashion',
         tagline: 'Boutique',
       },
@@ -40,7 +62,7 @@ export class HeroOwlCarouselComponent implements OnInit {
     dots: false,
     navSpeed: 700,
     navText: ['', ''],
-    autoplay: true,
+    // autoplay: true,
     animateOut: 'fadeOut',
     items: 1,
     // responsive: {

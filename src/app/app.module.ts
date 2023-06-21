@@ -13,6 +13,9 @@ import { HeroSliderComponent } from './components/hero-slider/hero-slider.compon
 import { HeroOwlCarouselComponent } from './components/hero-owl-carousel/hero-owl-carousel.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IconsModule } from './icons/icons.module';
+import { FooterComponent } from './components/footer/footer.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PageNotFoundComponent,
     LayoutComponent,
     HeroOwlCarouselComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,9 +34,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NgBootstrapModule,
     HeroSliderComponent,
     CarouselModule,
-    BrowserAnimationsModule 
+    BrowserAnimationsModule,
+    IconsModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

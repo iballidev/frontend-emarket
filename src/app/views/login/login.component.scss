@@ -1,0 +1,9 @@
+form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-check-input:checked {
+    background-color: var(--clr-primary-400);
+    border-color: var(--clr-primary-400);
+}

@@ -1,64 +1,135 @@
 <!-- <p>toolbar works!</p> -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+<nav class="navbar navbar-expand-lg">
+  <div class="main-wrapper container-fluid">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <span class="visually-hidden">Emarket brand logo</span>
+      <img
+        src="../../../assets/images/Emarket-brand-logo.svg"
+        alt=""
+        class="img-fluid"
+      />
+    </a>
+    <div class="d-flex align-items-center">
+      <button
+        #navToggler
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        (click)="toggleNav()"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="shopping-cart-wrap d-lg-none">
+        <a href="#" class="nav-link position-relative">
+          <i-feather name="shopping-bag" class="shopping-bag"> </i-feather>
+          <span
+            class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger"
+          >
+            2
+            <span class="visually-hidden">shopping cart items</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <form class="d-flex ms-auto w-100 mt-3 mb-1 mt-lg-0 mb-lg-0" role="search">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Search Emarket"
+        aria-label="Search"
+      />
+      <button class="btn" type="submit">
+        <i-feather name="Search" class="search-icon"></i-feather>
+      </button>
+    </form>
+    <div
+      class="collapse navbar-collapse"
+      [ngClass]="{ show: navExpanded }"
+      id="navbarSupportedContent"
+    >
+      <!-- <form class="d-flex ms-auto w-100" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search Emarket" aria-label="Search" />
+                <button class="btn" type="submit"> <i-feather name="Search" class="search-icon"></i-feather></button>
+            </form> -->
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <!-- <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" [routerLink]="['/']"
+                        routerLinkActive="router-link-active">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle"
-                        href="#"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                    >
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="#">Action</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Another action</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input
-                    class="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
+                </li> -->
+        <li class="nav-item dropdown">
+          <div ngbDropdown class="d-inline-block">
+            <button
+              id="dropdownBasic1"
+              ngbDropdownToggle
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Account
+            </button>
+            <ul
+              ngbDropdownMenu
+              aria-labelledby="dropdownBasic1"
+              class="dropdown-menu fs-150"
+            >
+              <li>
+                <a
+                  class="dropdown-item"
+                  [routerLink]="['/auth']"
+                  routerLinkActive="router-link-active"
+                  >Sign in</a
                 >
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  [routerLink]="['/auth/signup']"
+                  routerLinkActive="router-link-active"
+                  >Create an Account</a
+                >
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Orders</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Wishlist</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Track order</a>
+              </li>
+              <li>
+                <a class="dropdown-item text-danger fw-bold" href="#">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+
+      <div class="shopping-cart-wrap d-none d-lg-block">
+        <a href="#" class="nav-link position-relative">
+          <i-feather name="shopping-bag" class="shopping-bag"> </i-feather>
+          <span
+            class="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger"
+          >
+            2
+            <span class="visually-hidden">shopping cart items</span>
+          </span>
+        </a>
+      </div>
     </div>
+  </div>
 </nav>

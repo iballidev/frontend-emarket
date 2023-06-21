@@ -6,6 +6,11 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./auth/auth.module').then((mod) => mod.AuthModule),
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
 

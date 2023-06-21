@@ -1,0 +1,17 @@
+
+.btn {
+    &:focus,
+    &:focus-visible,
+    &:active {
+      outline: 0;
+      box-shadow: none;
+      box-shadow: 0;
+    }
+  }
+
+  .btn-primary{
+    background-color: var(--clr-primary-400);
+    &:hover{
+        background-color: var(--clr-primary-500);
+    }
+  }

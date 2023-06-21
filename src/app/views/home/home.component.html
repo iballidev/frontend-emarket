@@ -1,7 +1,7 @@
 <!-- <p>home works!</p> -->
-<div class="container-fluid">
+<div class="main-wrapper container-fluid pt-3">
   <div class="row">
-    <div class="col-md-2">
+    <!-- <div class="col-md-2 d-none">
       <div class="card border-0 rounded-0">
         <div class="card-body">
           <nav class="nav flex-column">
@@ -12,42 +12,38 @@
           </nav>
         </div>
       </div>
-    </div>
-    <div class="col-md-10">
-      <div class="card border-0 bg-accent-300 rounded-0">
-        <div class="card-body">
+    </div> -->
+    <div class="col-md-12">
+      <!-- <div class="card border-0 bg-accent-300 rounded-0">
+        <div class="card-body"> -->
           <div class="row g-3 mb-3">
             <div class="col-12 col-xl-9">
-              <div class="card rounded-0">
-                <div class="card-body">
-                  <!-- Hero slider -->
-                  <app-hero-owl-carousel></app-hero-owl-carousel>
-                  <!-- <app-hero-slider></app-hero-slider> -->
-                </div>
-              </div>
+              <!-- <div class="card rounded-0">
+                <div class="card-body"> -->
+              <!-- Hero slider -->
+              <app-hero-owl-carousel></app-hero-owl-carousel>
+              <!-- <app-hero-slider></app-hero-slider> -->
+              <!-- </div>
+              </div> -->
             </div>
             <div class="col-12 col-xl-3 h-100">
               <div class="row g-3">
                 <div class="col-6 col-md-4 offset-md-2 offset-xl-0 col-xl-12">
-                  <div class="card rounded-0">
-                    <div class="card-body">
-                      <img
-                        src="../../../assets/images/pexels-jeshootscom-442576.jpg"
-                        alt=""
-                        class="img-fluid"
-                      />
-                    </div>
+                  <div>
+                    <img
+                      src="../../../assets/images/pexels-jeshootscom-442576.jpg"
+                      alt=""
+                      class="img-fluid"
+                    />
                   </div>
                 </div>
                 <div class="col-6 col-md-4 col-xl-12">
-                  <div class="card rounded-0">
-                    <div class="card-body">
-                      <img
-                        src="../../../assets/images/pexels-lalesh-aldarwish-194511.jpg"
-                        alt=""
-                        class="img-fluid"
-                      />
-                    </div>
+                  <div>
+                    <img
+                      src="../../../assets/images/pexels-lalesh-aldarwish-194511.jpg"
+                      alt=""
+                      class="img-fluid"
+                    />
                   </div>
                 </div>
               </div>
@@ -58,7 +54,7 @@
               class="col-6 col-md-3"
               *ngFor="let category of productCategory"
             >
-              <div class="product-card category | card border-0">
+              <div class="product-card category | card border-0 shadow-sm">
                 <div class="card-header bg-white fw-bold fs-200">
                   {{ category.title | titlecase }}
                 </div>
@@ -71,7 +67,11 @@
                 </div>
                 <div class="card-body">
                   <p class="card-text fs-100 mb-0">
-                    <a href="#" class="text-decoration-none">Shop Now</a>
+                    <a
+                      [href]="category.categoryUrl"
+                      class="text-decoration-none fw-bold fs-150 text-secondary-500"
+                      >Shop Now</a
+                    >
                   </p>
                 </div>
               </div>
@@ -107,8 +107,8 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        <!-- </div>
+      </div> -->
     </div>
   </div>
 </div>
