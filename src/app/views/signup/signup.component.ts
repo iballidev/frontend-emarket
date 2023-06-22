@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SignupUser } from 'src/app/models/interfaces/user';
+import { AuthService } from 'src/app/services/auth.service';
 /*
  *@param form
  */
@@ -22,7 +24,7 @@ function passwordMatchValidator(form: any) {
 })
 export class SignupComponent implements OnInit {
   SignUpForm!: FormGroup;
-  constructor(private _fb: FormBuilder) {}
+  constructor(private _fb: FormBuilder, private _authSvc: AuthService) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -55,5 +57,17 @@ export class SignupComponent implements OnInit {
 
   onSubmit() {
     console.log('SignUpForm: ', this.SignUpForm.value);
+    const payload: SignupUser = {
+      email: this.SignUpForm.value.Email,
+      password: this.SignUpForm.value.Password,
+    };
+    this._authSvc.SignupUser(payload).subscribe({
+      next: (response: any) => {
+        console.log('response: ', response);
+      },
+      error: (err: any) => {
+        console.error('Error: ', err);
+      },
+    });
   }
 }

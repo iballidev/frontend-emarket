@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -7,14 +14,14 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 })
 export class ToolbarComponent implements OnInit, AfterViewInit {
   navExpanded: boolean = false;
-  constructor() {}
+  constructor(public _authSvc: AuthService) {}
 
   ngOnInit(): void {}
 
   @ViewChild('navToggler') navToggler!: ElementRef;
 
   ngAfterViewInit() {
-      console.log(this.navToggler.nativeElement.innerHTML);
+    console.log(this.navToggler.nativeElement.innerHTML);
   }
 
   toggleNav() {

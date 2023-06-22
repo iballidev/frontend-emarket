@@ -7,7 +7,7 @@
         <div class="mb-3">
           <label for="Email" class="form-label">Email</label>
           <input type="email" class="form-control" id="Email"
-            [ngClass]="{'is-invalid': Email.touched && Email.invalid}" id="exampleInputUsername"
+            [ngClass]="{'is-invalid': Email.touched && Email.invalid}"
             aria-describedby="Email" name="Email" [(ngModel)]="model.Email"
             #Email="ngModel" required email />
           <small id="emailErrorMsg" class="form-text text-danger invalid-feedback">Email is required.</small>
@@ -18,7 +18,7 @@
           <small id="passwordErrorMsg" class="form-text text-danger invalid-feedback">Password is required.</small>
         </div>
         <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1" name="IsKeepLogginIn" [(ngModel)]="model.IsKeepLogginIn" #IsKeepLogginIn="ngModel">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" name="IsKeepLoggedIn" [(ngModel)]="model.IsKeepLoggedIn" #IsKeepLoggedIn="ngModel">
           <label class="form-check-label mb-0" for="exampleCheck1">Keep me logged in</label>
         </div>
       </div>
