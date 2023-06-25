@@ -26,5 +26,6 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 
   toggleNav() {
     this.navExpanded = !this.navExpanded;
+    console.log(' this.navExpanded: ', this.navExpanded);
   }
 }

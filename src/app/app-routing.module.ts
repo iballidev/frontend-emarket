@@ -6,12 +6,11 @@ import { AuthGuard } from './services/auth.guard';
 import { AuthAdminGuard } from './services/auth-admin.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'home' },
-  { path: 'home', component: HomeComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'app' },
   {
-    path: 'auth',
+    path: 'app',
     loadChildren: () =>
-      import('./auth/auth.module').then((mod) => mod.AuthModule),
+      import('./views/layout/layout.module').then((mod) => mod.LayoutModule),
   },
   {
     path: 'admin',

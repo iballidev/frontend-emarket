@@ -1,6 +1,7 @@
 <!-- <p>home works!</p> -->
 <div class="main-wrapper container-fluid pt-3">
   <div class="row">
+  <!-- <h1>Hello</h1> -->
     <!-- <div class="col-md-2 d-none">
       <div class="card border-0 rounded-0">
         <div class="card-body">
@@ -16,98 +17,59 @@
     <div class="col-md-12">
       <!-- <div class="card border-0 bg-accent-300 rounded-0">
         <div class="card-body"> -->
-          <div class="row g-3 mb-3">
-            <div class="col-12 col-xl-9">
-              <!-- <div class="card rounded-0">
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-xl-9">
+          <!-- <div class="card rounded-0">
                 <div class="card-body"> -->
-              <!-- Hero slider -->
-              <app-hero-owl-carousel></app-hero-owl-carousel>
-              <!-- <app-hero-slider></app-hero-slider> -->
-              <!-- </div>
+          <!-- Hero slider -->
+          <app-hero-owl-carousel></app-hero-owl-carousel>
+          <!-- <app-hero-slider></app-hero-slider> -->
+          <!-- </div>
               </div> -->
+        </div>
+        <div class="col-12 col-xl-3 h-100">
+          <div class="row g-3">
+            <div class="col-6 col-md-4 offset-md-2 offset-xl-0 col-xl-12">
+              <div>
+                <img src="../../../assets/images/pexels-jeshootscom-442576.jpg" alt="" class="img-fluid" />
+              </div>
             </div>
-            <div class="col-12 col-xl-3 h-100">
-              <div class="row g-3">
-                <div class="col-6 col-md-4 offset-md-2 offset-xl-0 col-xl-12">
-                  <div>
-                    <img
-                      src="../../../assets/images/pexels-jeshootscom-442576.jpg"
-                      alt=""
-                      class="img-fluid"
-                    />
+            <div class="col-6 col-md-4 col-xl-12">
+              <div>
+                <img src="../../../assets/images/pexels-lalesh-aldarwish-194511.jpg" alt="" class="img-fluid" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-categories-listing-section></app-categories-listing-section>
+      <div class="card">
+        <div class="card-header bg-white fw-bold fs-300">New Arrival</div>
+        <div class="card-body">
+          <div class="row g-2 g-md-4">
+            <div class="col-6 col-md-3" *ngFor="let item of [1, 2, 3, 4]">
+              <a href="" class="text-decoration-none">
+                <div class="product-card | card border-0 shadow-sm">
+                  <div class="image-wrap p-3">
+                    <img src="../../../assets/images/s-l300.jpg" class="card-img-top" alt="..." />
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text title fs-100">
+                      Lorem ipsum dolor sit amet consectetur adipisicing
+                      elit. Lorem ipsum dolor sit amet consectetur
+                      adipisicing elit.
+                    </p>
+                    <p class="fw-bold fs-200 mb-0">
+                      {{ 200 | currency : "INR" }}
+                    </p>
                   </div>
                 </div>
-                <div class="col-6 col-md-4 col-xl-12">
-                  <div>
-                    <img
-                      src="../../../assets/images/pexels-lalesh-aldarwish-194511.jpg"
-                      alt=""
-                      class="img-fluid"
-                    />
-                  </div>
-                </div>
-              </div>
+              </a>
             </div>
           </div>
-          <div class="row g-2 g-md-4 mb-3">
-            <div
-              class="col-6 col-md-3"
-              *ngFor="let category of productCategory"
-            >
-              <div class="product-card category | card border-0 shadow-sm">
-                <div class="card-header bg-white fw-bold fs-200">
-                  {{ category.title | titlecase }}
-                </div>
-                <div class="image-wrap p-3">
-                  <img
-                    [src]="category.categoryImg"
-                    class="card-img-top"
-                    alt="..."
-                  />
-                </div>
-                <div class="card-body">
-                  <p class="card-text fs-100 mb-0">
-                    <a
-                      [href]="category.categoryUrl"
-                      class="text-decoration-none fw-bold fs-150 text-secondary-500"
-                      >Shop Now</a
-                    >
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header bg-white fw-bold fs-300">New Arrival</div>
-            <div class="card-body">
-              <div class="row g-2 g-md-4">
-                <div class="col-6 col-md-3" *ngFor="let item of [1, 2, 3, 4]">
-                  <a href="" class="text-decoration-none">
-                    <div class="product-card | card border-0 shadow-sm">
-                      <div class="image-wrap p-3">
-                        <img
-                          src="../../../assets/images/s-l300.jpg"
-                          class="card-img-top"
-                          alt="..."
-                        />
-                      </div>
-                      <div class="card-body">
-                        <p class="card-text title fs-100">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Lorem ipsum dolor sit amet consectetur
-                          adipisicing elit.
-                        </p>
-                        <p class="fw-bold fs-200 mb-0">
-                          {{ 200 | currency : "INR" }}
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        <!-- </div>
+        </div>
+      </div>
+      <!-- </div>
       </div> -->
     </div>
   </div>

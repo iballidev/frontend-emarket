@@ -1,1 +1,27 @@
-<p>admin works!</p>
+<!-- <p>admin works!</p> -->
+<div class="wrapper">
+    <div class="sidebar">
+        <div class="fs-200 fw-bold text-accent-300">iballi2017@gmail (Admin)</div>
+        <ul class="ps-0 list-style-none">
+            <li>
+                <a [routerLink]="['/admin/dashboard']" routerLinkActive="router-link-active" >Dashboard</a>
+            </li>
+            <li>
+                <a [routerLink]="['/admin/product-categories']" routerLinkActive="router-link-active" >Product categories</a>
+            </li>
+            <li>
+                <a [routerLink]="['/admin/users']" routerLinkActive="router-link-active" >Users</a>
+            </li>
+            <li>
+                <a [routerLink]="['/admin/orders']" routerLinkActive="router-link-active" >Orders</a>
+            </li>
+            <li>
+                <a [routerLink]="['/admin/customers']" routerLinkActive="router-link-active" >Customers</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <app-toolbar></app-toolbar>
+        <router-outlet></router-outlet>
+    </div>
+</div>

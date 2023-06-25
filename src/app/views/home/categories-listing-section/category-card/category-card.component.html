@@ -1,0 +1,16 @@
+<!-- <p>category-card works!</p> -->
+
+<div class="product-card category | card border-0 shadow-sm">
+    <div class="card-header bg-white fw-bold fs-200">
+      {{ category.title | titlecase }}
+    </div>
+    <div class="image-wrap p-3">
+      <img [src]="category.featuredImg" class="card-img-top" alt="..." />
+    </div>
+    <div class="card-body">
+      <p class="card-text fs-100 mb-0">
+        <a [href]="category.categoryUrl" class="text-decoration-none fw-bold fs-150 text-secondary-500">Shop
+          Now</a>
+      </p>
+    </div>
+  </div>

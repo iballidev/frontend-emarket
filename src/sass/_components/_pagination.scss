@@ -1,0 +1,14 @@
+.pagination {
+    .page-item {
+        &.active {
+            a {
+                background-color: var(--clr-accent-50);
+                border: 1px solid var(--clr-accent-50);
+                color: var(--clr-accent-300);
+            }
+        }
+        a {
+            color: inherit;
+        }
+    }
+}
