@@ -16,13 +16,13 @@
     <table class="table table-striped table-hover table-sm fs-100">
         <thead class="table-dark">
             <tr>
-                <th scope="col">S/N</th>
-                <th scope="col">Featured image</th>
-                <th scope="col">Title</th>
-                <th scope="col">Created by</th>
-                <th scope="col">Created date</th>
-                <th scope="col">Updated date</th>
-                <th scope="col"></th>
+                <th scope="col" class="py-3">S/N</th>
+                <th scope="col" class="py-3">Featured image</th>
+                <th scope="col" class="py-3">Title</th>
+                <th scope="col" class="py-3">Created by</th>
+                <th scope="col" class="py-3">Created date</th>
+                <th scope="col" class="py-3">Updated date</th>
+                <th scope="col" class="py-3"></th>
             </tr>
         </thead>
         <tbody>
@@ -43,7 +43,7 @@
                         <button class="btn-success btn btn-sm">
                             <i class="fas fa-pen"></i>
                         </button>
-                        <button class="btn-danger btn btn-sm">
+                        <button class="btn-danger btn btn-sm" (click)="onDeleteCategory(category.id)">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>

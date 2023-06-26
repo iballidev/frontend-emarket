@@ -30,4 +30,8 @@ export class ProductCategoryService {
       })
     );
   }
+
+  deleteProductCategory(CategoryId: string) {
+    return this._http.delete(productCategoryUrl + '/' + CategoryId);
+  }
 }
