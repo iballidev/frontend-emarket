@@ -8,6 +8,9 @@ import { UsersComponent } from './users/users.component';
 import { OrdersComponent } from './orders/orders.component';
 import { CustomersComponent } from './customers/customers.component';
 import { SharedModule } from '../shared/shared.module';
+import { UpdateProductCategoryComponent } from './product-categories/update-product-category/update-product-category.component';
+import { FormsModule } from '@angular/forms';
+import { AddProductCategoryComponent } from './product-categories/add-product-category/add-product-category.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,9 @@ import { SharedModule } from '../shared/shared.module';
     UsersComponent,
     OrdersComponent,
     CustomersComponent,
+    UpdateProductCategoryComponent,
+    AddProductCategoryComponent,
   ],
-  imports: [CommonModule, AdminRoutingModule, SharedModule],
+  imports: [CommonModule, AdminRoutingModule, SharedModule, FormsModule],
 })
 export class AdminModule {}

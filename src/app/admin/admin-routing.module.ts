@@ -6,6 +6,7 @@ import { UsersComponent } from './users/users.component';
 import { CustomersComponent } from './customers/customers.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ProductCategoriesComponent } from './product-categories/product-categories.component';
+import { UpdateProductCategoryComponent } from './product-categories/update-product-category/update-product-category.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: '', component: DashboardComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'product-categories', component: ProductCategoriesComponent },
+      {path: 'product-categories/:categoryId', component: UpdateProductCategoryComponent},
       { path: 'users', component: UsersComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'orders', component: OrdersComponent },

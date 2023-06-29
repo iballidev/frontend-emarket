@@ -11,6 +11,10 @@ export class ProductCategoryService {
   // productCategoryUr =
   constructor(private _http: HttpClient) {}
 
+  createProductCategory(UserId: string, Payload: any) {
+    return this._http.post(productCategoryUrl + '/' + UserId, Payload);
+  }
+
   getProductCategoryList(): Observable<ProductCategory> {
     return this._http.get<ProductCategory>(productCategoryUrl).pipe(
       map((response: any) => {
@@ -29,6 +33,16 @@ export class ProductCategoryService {
         });
       })
     );
+  }
+
+  getProductCategory(CategoryId: string) {
+    return this._http.get<ProductCategory>(
+      `${productCategoryUrl}/${CategoryId}`
+    );
+  }
+
+  updateProductCategory(CategoryId: string, Payload: any) {
+    return this._http.patch(productCategoryUrl + '/' + CategoryId, Payload);
   }
 
   deleteProductCategory(CategoryId: string) {

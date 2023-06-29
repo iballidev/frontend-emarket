@@ -1,1 +1,27 @@
-<p>user works!</p>
+<!-- <p>user works!</p> -->
+<div class="wrapper">
+    <div class="sidebar">
+        <div class="fs-200 fw-bold text-accent-300">iballi2017@gmail</div>
+        <ul class="ps-0 list-style-none">
+            <li>
+                <a [routerLink]="['/user/my-account']" routerLinkActive="router-link-active">My account</a>
+            </li>
+            <li>
+                <a [routerLink]="['/user/wishlist']" routerLinkActive="router-link-active">Wishlist</a>
+            </li>
+            <li>
+                <a [routerLink]="['/user/shopping-cart']" routerLinkActive="router-link-active">Shopping cart</a>
+            </li>
+            <li>
+                <a [routerLink]="['/user/my-orders']" routerLinkActive="router-link-active">My orders</a>
+            </li>
+            <li>
+                <a href="#" class="text-danger fw-bold">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <app-toolbar></app-toolbar>
+        <router-outlet></router-outlet>
+    </div>
+</div>

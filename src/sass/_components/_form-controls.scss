@@ -29,7 +29,16 @@ input[type="email"],
 input[type="search"],
 input[type="tel"],
 input[type="date"],
-select, .form-btn {
+select,
+.form-btn {
+  &.form-control {
+    height: 40px;
+    @include mixins.minmq(50em) {
+      height: 45px;
+    }
+  }
+}
+.form-btn {
   height: 40px;
   @include mixins.minmq(50em) {
     height: 45px;

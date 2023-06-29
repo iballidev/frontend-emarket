@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { authUrl } from '../config/api';
+import { authUrl, refreshTokenUrl } from '../config/api';
 import { HttpClient } from '@angular/common/http';
 import { LoginUser, SignupUser } from '../models/interfaces/user';
 import { Observable, catchError, map, throwError } from 'rxjs';
@@ -22,11 +22,7 @@ export class AuthService {
   SignupUser(payload: SignupUser) {
     return this._http
       .post(this.signupUrl, payload)
-      .pipe(
-        catchError((err: Response) =>
-          throwError(() => new AppError(err))
-        )
-      );
+      .pipe(catchError((err: Response) => throwError(() => new AppError(err))));
   }
 
   LoginUser(payload: LoginUser) {
@@ -58,16 +54,48 @@ export class AuthService {
     return true;
   }
 
+  get getToken() {
+    var token: any = localStorage.getItem('token');
+    return token || null;
+  }
+
   get currentUser() {
     var token: any = localStorage.getItem('token');
+    console.warn('currentUser token: ', token);
     if (!token) return null;
     var decoded: any = jwt_decode(token);
     if (decoded.exp * 1000 < new Date().getTime()) return null;
-    // console.log(decoded.userInfo);
+    console.warn(decoded);
     return decoded.userInfo;
   }
 
   LogoutUser() {
     if (localStorage.getItem('token')) localStorage.removeItem('token');
+  }
+
+  get RefreshToken() {
+    return this._http.get(refreshTokenUrl).pipe(
+      map((response: any) => {
+        console.log('response svc: ', response);
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          return response.token;
+        }
+        // return false;
+      })
+    );
+    // return this._http
+    //   .post<UserModel>(this.RefreshTokenUrl, {
+    //     refreshtoken,
+    //   })
+    //   .pipe(
+    //     map((UserModel) => {
+    //       console.log('NEW DATA UserModel: ', UserModel);
+    //       localStorage.setItem('token', 'null');
+    //       this.setToken(UserModel.AccessToken);
+    //       localStorage.setItem('RefreshToken', UserModel.RefreshToken);
+    //       return UserModel.AccessToken;
+    //     })
+    //   );
   }
 }

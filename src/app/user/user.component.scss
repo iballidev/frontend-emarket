@@ -1,0 +1,57 @@
+@use "../../sass/_partials/mixins";
+.sidebar {
+    background-color: var(--clr-primary-300);
+    min-height: 100vh;
+    --itemPadd: 0.6em 0.4em;
+    position: fixed;
+    height: 100%;
+    width: 300px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 1;
+    div:first-child {
+        background-color: var(--clr-secondary-500);
+        padding: var(--itemPadd);
+        height: 60px;
+        display: flex;
+        align-items: center;
+    }
+    ul {
+        li {
+            a {
+                display: block;
+                padding: var(--itemPadd);
+                text-decoration: none;
+                color: var(--clr-accent-300);
+                font-size: var(--fs-150);
+                &:hover, &.router-link-active {
+                    background-color: var(--clr-accent-50);
+                    color: var(--base-text-color);
+                }
+            }
+        }
+    }
+}
+@include mixins.minmq(50em) {
+    .sidebar {
+        position: absolute;
+        z-index: 50000;
+    }
+}
+
+.main {
+    // background-color: red;
+    // padding-top: 2em;
+}
+
+
+
+@include mixins.minmq(50em) {
+    .main {
+        margin-left: 300px;
+        // background-color: red;
+        // padding-top: 2em;
+    }
+}
