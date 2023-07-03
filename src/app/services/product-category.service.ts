@@ -11,12 +11,16 @@ export class ProductCategoryService {
   // productCategoryUr =
   constructor(private _http: HttpClient) {}
 
-  createProductCategory(UserId: string, Payload: any) {
-    return this._http.post(productCategoryUrl + '/' + UserId, Payload);
+  createProductCategory(UserProfileId: string, Payload: any) {
+    const formData = new FormData();
+    for (let prop in Payload) {
+      formData.append(prop, Payload[prop]);
+    }
+    return this._http.post(productCategoryUrl + '/' + UserProfileId, formData);
   }
 
   getProductCategoryList(): Observable<ProductCategory> {
-    return this._http.get<ProductCategory>(productCategoryUrl).pipe(
+    return this._http.get<ProductCategory>(productCategoryUrl + '/all').pipe(
       map((response: any) => {
         console.log('response: ', response);
         const body = response?.category.categoryList;

@@ -1,12 +1,22 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { userProfileUrl } from '../config/api';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserProfileService {
+  currentUser: any;
+  constructor(private _http: HttpClient, private _authSvc: AuthService) {
+    this.currentUser = this._authSvc.currentUser;
+    console.log('this.currentUser: ', this.currentUser);
+  }
 
-  constructor() { }
-
+  getUserProfile(): Observable<any> {
+    return this._http.get<any>(userProfileUrl + '/' + this.currentUser?.userId);
+  }
 
   /**Http Headers */
   /*

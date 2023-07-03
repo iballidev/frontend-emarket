@@ -32,6 +32,11 @@ export class ProductCategoriesComponent implements OnInit {
       }
     );
     this.getProductCategoryList();
+
+    this.modalService.activeInstances.subscribe((modalList) => {
+      /**loads the list of categories when their is no opened modal (modal closes) */
+      if (!modalList.length) this.getProductCategoryList();
+    });
   }
 
   getProductCategoryList() {

@@ -61,11 +61,9 @@ export class AuthService {
 
   get currentUser() {
     var token: any = localStorage.getItem('token');
-    console.warn('currentUser token: ', token);
     if (!token) return null;
     var decoded: any = jwt_decode(token);
     if (decoded.exp * 1000 < new Date().getTime()) return null;
-    console.warn(decoded);
     return decoded.userInfo;
   }
 
@@ -80,8 +78,9 @@ export class AuthService {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
           return response.token;
+        } else {
+          return null;
         }
-        // return false;
       })
     );
     // return this._http

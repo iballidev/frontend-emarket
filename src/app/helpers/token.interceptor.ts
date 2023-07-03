@@ -47,7 +47,6 @@ export class TokenInterceptor implements HttpInterceptor {
           (err.status === 401 || err.status === 400)
         ) {
           console.warn('status: ', err?.status);
-          console.warn('request: ', request);
           return this.Handle401Error(request, next);
         }
         return throwError(() => err);
@@ -65,6 +64,19 @@ export class TokenInterceptor implements HttpInterceptor {
     if (!this.IsRefreshing) {
       this.IsRefreshing = true;
       this.RefreshTokenSubject.next(null);
+
+      /**Testing: switchMap tutorial https://www.tektutorialshub.com/angular/using-switchmap-in-angular/#:~:text=The%20Angular%20SwitchMap%20maps%20each,it%20receives%20from%20the%20Source. */
+      let x = this._authSvc.RefreshToken.pipe(
+        switchMap((token: any) => {
+          console.warn('new token: ', token);
+          this.IsRefreshing = false;
+          this.RefreshTokenSubject.next(token);
+          return next.handle(this.AddToken(request, token));
+        })
+      );
+
+      x.subscribe((x2: any) => console.log('x2: ', x2));
+      /** */
 
       return this._authSvc.RefreshToken.pipe(
         switchMap((token: any) => {

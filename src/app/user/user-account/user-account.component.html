@@ -2,14 +2,19 @@
 
 <div class="container-fluid pt-3">
     <h1 class="fw-semi-bold fs-300">My Account</h1>
-    <ul class="list-style-none ps-0 line-height-400">
-        <li class="fw-semi-bold fs-200">Alli Ibrahim</li>
-        <li>Male</li>
-        <li>Nigerian</li>
-        <li><i class="fas fa-phone me-2"></i>08024399166</li>
-        <li><i class="fas fa-envelope me-2"></i>iballi@gmail.com</li>
-        <li> <i class="fas fa-map-marker-alt me-2"></i>10B, Segun Akinola street, Abule-egba, Agege, Lagos,<br />
-            Nigeria.</li>
+    <ul class="list-style-none ps-0 line-height-400" *ngIf="userProfile">
+        <li class="fw-semi-bold fs-200">{{userProfile?.lastName | titlecase }} {{userProfile?.firstName | titlecase}}
+        </li>
+        <li>{{userProfile?.gender | titlecase}}</li>
+        <li>{{userProfile?.nationality | titlecase}}</li>
+        <li><i class="fas fa-phone me-2"></i>{{userProfile?.phone | titlecase }}</li>
+        <li><i class="fas fa-envelope me-2"></i>{{userProfile?.user?.email | titlecase }}</li>
+        <li> <i class="fas fa-map-marker-alt me-2"></i>{{userProfile?.address?.addressLine | titlecase }}
+            <span *ngIf="userProfile?.address?.city">, {{userProfile.address.city | titlecase }}</span> <span
+                *ngIf="userProfile?.address?.state">, {{userProfile?.address?.state | titlecase }}</span>
+                <span *ngIf="userProfile?.address?.country">, {{userProfile?.address?.country | titlecase }}</span>.
+        </li>
+        <li>{{userProfile?.address?.zipCode}}</li>
     </ul>
     <table class="table table-striped table-hover table-sm fs-100">
         <thead class="table-dark">

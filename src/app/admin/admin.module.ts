@@ -9,7 +9,7 @@ import { OrdersComponent } from './orders/orders.component';
 import { CustomersComponent } from './customers/customers.component';
 import { SharedModule } from '../shared/shared.module';
 import { UpdateProductCategoryComponent } from './product-categories/update-product-category/update-product-category.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddProductCategoryComponent } from './product-categories/add-product-category/add-product-category.component';
 
 @NgModule({
@@ -23,6 +23,6 @@ import { AddProductCategoryComponent } from './product-categories/add-product-ca
     UpdateProductCategoryComponent,
     AddProductCategoryComponent,
   ],
-  imports: [CommonModule, AdminRoutingModule, SharedModule, FormsModule],
+  imports: [CommonModule, AdminRoutingModule, SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class AdminModule {}

@@ -58,10 +58,13 @@
                   <a class="dropdown-item" [routerLink]="['/app/auth/signup']" routerLinkActive="router-link-active">Create
                     an Account</a>
                 </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
               </ng-container>
               <ng-container *ngIf="_authSvc.isLoggedIn()">
                 <li>
-                  <hr class="dropdown-divider" />
+                  <a class="dropdown-item" [routerLink]="['/user/my-account']" routerLinkActive="router-link-active" >My Account</a>
                 </li>
                 <li>
                   <a class="dropdown-item" [routerLink]="['/orders']" routerLinkActive="router-link-active" >Orders</a>
