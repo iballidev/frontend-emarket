@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { PreviewFileUploadService } from 'src/app/services/preview-file-upload.service';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
+import { UserProfileService } from 'src/app/services/user-profile.service';
+import { AddProductCategoryComponent } from '../add-product-category/add-product-category.component';
 
 @Component({
   selector: 'app-update-product-category',
@@ -15,17 +19,29 @@ export class UpdateProductCategoryComponent implements OnInit {
   loading!: boolean;
   // rawImg!: string | Blob;
   rawImg: any;
+  uploadedImage = '';
+  userProfileId: any;
+  previewUploadedFile: any;
+  btnTitle:string = "Add category";
   constructor(
     private _productCategorySvc: ProductCategoryService,
-    private _route: ActivatedRoute
+    private _previewFileUploadSvc: PreviewFileUploadService,
+    private _userProfileSvc: UserProfileService,
+    private _route: ActivatedRoute,
+    private _router: Router,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
     this._route.params.subscribe((params: any) => {
-      console.log('params: ', params);
       // this.categoryId = params.get('categoryId');
       this.categoryId = params.categoryId;
       this.getCategory(this.categoryId);
+    });
+
+    this._userProfileSvc.getUserProfile().subscribe((data: any) => {
+      this.userProfileId = data.profile._id;
     });
   }
 
@@ -51,16 +67,28 @@ export class UpdateProductCategoryComponent implements OnInit {
     // this.featuredImageFile = event.target.files[0];
     // console.log('this.featuredImageFile: ', this.featuredImageFile);
     this.rawImg = event.target.files[0];
+    this.uploadedImage = this.rawImg.name;
+
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = () => {
       this.featuredImageFile = event.target.files[0];
-      // this.label = this.uploadedFile.name;
-      // this.isSelected = true;
-
-      const formData = new FormData();
-      formData.append('UploadFile', this.rawImg);
-      console.log('formData: ', formData);
+      let payload = {
+        previewFile: this.featuredImageFile,
+        createdBy: this.userProfileId,
+      };
+      this._previewFileUploadSvc.uploadFile(payload).subscribe({
+        next: (data: any) => {
+          if (data) {
+            this.previewUploadedFile = data.previewFile;
+          }
+        },
+        error: (err) => {
+          if (err) {
+            console.error('Error: ', err);
+          }
+        },
+      });
     };
   }
 
@@ -71,8 +99,6 @@ export class UpdateProductCategoryComponent implements OnInit {
       categoryFeaturedImage: this.featuredImageFile,
     };
 
-    console.log('payload: ', payload);
-
     this.loading = !this.loading;
 
     this._productCategorySvc
@@ -81,7 +107,23 @@ export class UpdateProductCategoryComponent implements OnInit {
         if (response) {
           this.loading = false;
           console.log('response: ', response);
+          this._router.navigate(['/admin/product-categories']);
         }
       });
+  }
+
+  openAddProductCategory($event: boolean) {
+    console.log('$event: ', $event);
+    if ($event) {
+      const modalRef = this.modalService.open(AddProductCategoryComponent, {
+        centered: true,
+      });
+      // const modalRef = this.modalService.open(AddProductCategoryComponent, { fullscreen: true });
+      modalRef.componentInstance.description = 'Create a new product category';
+    }
+  }
+
+  back() {
+    history.back();
   }
 }

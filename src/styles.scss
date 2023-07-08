@@ -16,3 +16,11 @@
 .modal {
     z-index: 100000;
 }
+
+.multiselect-dropdown .dropdown-btn {
+    min-height: 45px !important;
+    padding: 0.375rem 0.75rem !important;
+    // display: flex !important;
+    // flex-direction: column !important;
+    // justify-content: center;
+}

@@ -11,7 +11,6 @@ export class UserProfileService {
   currentUser: any;
   constructor(private _http: HttpClient, private _authSvc: AuthService) {
     this.currentUser = this._authSvc.currentUser;
-    console.log('this.currentUser: ', this.currentUser);
   }
 
   getUserProfile(): Observable<any> {

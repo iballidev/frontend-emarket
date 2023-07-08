@@ -1,6 +1,6 @@
 <!-- <p>add-product-category works!</p> -->
-{{createProductCategoryForm.value | json}}
-<form  #createProductCategoryForm='ngForm' (ngSubmit)="createProductCategoryForm.valid && createCategory()">
+
+<form #createProductCategoryForm='ngForm' (ngSubmit)="createProductCategoryForm.valid && createCategory()">
     <div class="modal-header">
         <h4 class="modal-title">Create category</h4>
         <button type="button" class="btn-close" aria-label="Close"
@@ -17,11 +17,13 @@
         </div>
         <div class="mb-3">
             <label for="FeaturedImage" class="form-label">Featured Image</label>
-            <input type="file" class="form-control" name="FeaturedImage" id="FeaturedImage" (change)="onSelect($event)" #fileInput>
+            <input type="file" class="form-control" name="FeaturedImage" id="FeaturedImage" (change)="onSelect($event)"
+                #fileInput>
         </div>
     </div>
     <div class="modal-footer justify-content-between">
-        <button type="submit" class="btn btn-outline-dark" [disabled]="createProductCategoryForm.invalid">Create</button>
+        <button type="submit" class="btn btn-outline-dark"
+            [disabled]="createProductCategoryForm.invalid || validationError">Create</button>
         <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
     </div>
 </form>

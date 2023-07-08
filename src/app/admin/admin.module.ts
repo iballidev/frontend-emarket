@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin.component';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -11,6 +11,11 @@ import { SharedModule } from '../shared/shared.module';
 import { UpdateProductCategoryComponent } from './product-categories/update-product-category/update-product-category.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddProductCategoryComponent } from './product-categories/add-product-category/add-product-category.component';
+import { ProductsComponent } from './products/products.component';
+import { AddProductComponent } from './products/add-product/add-product.component';
+import { UpdateProductComponent } from './products/update-product/update-product.component';
+import { ProductDetailsComponent } from './products/product-details/product-details.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -22,7 +27,19 @@ import { AddProductCategoryComponent } from './product-categories/add-product-ca
     CustomersComponent,
     UpdateProductCategoryComponent,
     AddProductCategoryComponent,
+    ProductsComponent,
+    AddProductComponent,
+    UpdateProductComponent,
+    ProductDetailsComponent,
   ],
-  imports: [CommonModule, AdminRoutingModule, SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    AdminRoutingModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule.forRoot(),
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AdminModule {}

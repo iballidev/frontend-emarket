@@ -1,0 +1,15 @@
+@use "../_abstracts/colors";
+@use "../_abstracts/typography";
+
+nav[role="navigation"][aria-label="Pagination"]{
+    display: flex;
+    justify-content: flex-end;
+}
+.ngx-pagination {
+    .current {
+        background-color: #14323E !important;
+        color: #fefefe;
+        cursor: default;
+    }
+    
+}

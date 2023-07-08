@@ -4,6 +4,7 @@ import { ProductCategory } from 'src/app/models/interfaces/product-category';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
 import { AddProductCategoryComponent } from './add-product-category/add-product-category.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
 
 @Component({
   selector: 'app-product-categories',
@@ -12,25 +13,20 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ProductCategoriesComponent implements OnInit {
   categoryList!: ProductCategory[];
+  btnTitle: string = 'Add category';
+  pageNumber!: number;
+  pageSize!: number;
+  totalCount!: number;
   constructor(
     private _productCategorySvc: ProductCategoryService,
     config: NgbModalConfig,
-    private modalService: NgbModal,
-    private _authSvc: AuthService
+    private modalService: NgbModal
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
   ngOnInit(): void {
-    this._authSvc.RefreshToken.subscribe(
-      (response: any) => {
-        console.log('response: ', response);
-      },
-      (err: any) => {
-        console.error('Error: ', err);
-      }
-    );
     this.getProductCategoryList();
 
     this.modalService.activeInstances.subscribe((modalList) => {
@@ -40,10 +36,17 @@ export class ProductCategoriesComponent implements OnInit {
   }
 
   getProductCategoryList() {
-    this._productCategorySvc.getProductCategoryList().subscribe({
+    let userQuery = {
+      pageSize: this.pageSize,
+      pageNumber: this.pageNumber,
+    };
+    this._productCategorySvc.getProductCategoryList(buildQueryParams(userQuery)).subscribe({
       next: (response: any) => {
         if (response) {
-          this.categoryList = response;
+          this.categoryList = response.category;
+          this.pageNumber = response.pageNumber;
+          this.pageSize = response.pageSize;
+          this.totalCount = response.count;
         }
       },
       error: (err: any) => {
@@ -52,20 +55,20 @@ export class ProductCategoriesComponent implements OnInit {
     });
   }
 
-  open() {
-    const modalRef = this.modalService.open(AddProductCategoryComponent, {
-      centered: true,
-    });
-    // const modalRef = this.modalService.open(AddProductCategoryComponent, { fullscreen: true });
-    modalRef.componentInstance.description = 'Create a new product category';
+  openAddProductCategory($event: boolean) {
+    if ($event) {
+      const modalRef = this.modalService.open(AddProductCategoryComponent, {
+        centered: true,
+      });
+      // const modalRef = this.modalService.open(AddProductCategoryComponent, { fullscreen: true });
+      modalRef.componentInstance.description = 'Create a new product category';
+    }
   }
 
   onDeleteCategory(CategoryId: string) {
-    console.log('CategoryId: ', CategoryId);
     this._productCategorySvc.deleteProductCategory(CategoryId).subscribe({
       next: (response: any) => {
         if (response) {
-          console.log('response: ', response);
           this.getProductCategoryList();
         }
       },
@@ -73,5 +76,34 @@ export class ProductCategoriesComponent implements OnInit {
         console.error('Error: ', err);
       },
     });
+  }
+
+  pageChangeEvent($event: any) {
+    this.pageNumber = $event;
+    console.log('Paginate: ', this.pageSize, this.pageNumber);
+    const queryParams = {
+      pageSize: this.pageSize,
+      pageNumber: this.pageNumber,
+      s: 2,
+    };
+    let userQuery = {
+      pageSize: queryParams.pageSize,
+      pageNumber: queryParams.pageNumber,
+    };
+    this._productCategorySvc
+      .getProductCategoryList(buildQueryParams(userQuery))
+      .subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.categoryList = response.category;
+            this.pageNumber = response.pageNumber;
+            this.pageSize = response.pageSize;
+            this.totalCount = response.count;
+          }
+        },
+        error: (err: any) => {
+          console.error('Error: ', err);
+        },
+      });
   }
 }

@@ -1,0 +1,64 @@
+<!-- <p>products works!</p> -->
+<div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between flex-wrap py-3">
+        <h1 class="fw-semi-bold fs-300">Products</h1>
+        <div>
+            <!-- <form class="d-flex ms-auto w-100 mt-3 mb-1 mt-lg-0 mb-lg-0 border rounded" role="search">
+                <input class="form-control me-2 border-0" type="search" placeholder="Add new category"
+                    aria-label="Search" />
+                <button class="btn d-flex align-items-center" type="submit" (click)="open()">
+                    <i class="fas fa-plus me-2"></i>Save
+                </button>
+            </form> -->
+            <app-modal-trigger-button (triggerEvent)="AddProduct()" [btnTitle]="btnTitle" [btnType]="btnType"></app-modal-trigger-button>
+        </div>
+    </div>
+    <table class="table table-striped table-hover table-sm fs-100">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col" class="py-3">S/N</th>
+                <th scope="col" class="py-3">Featured image</th>
+                <th scope="col" class="py-3">Title</th>
+                <th scope="col" class="py-3">Created by</th>
+                <th scope="col" class="py-3">Created date</th>
+                <th scope="col" class="py-3">Updated date</th>
+                <th scope="col" class="py-3">Updated by</th>
+                <th scope="col" class="py-3">Stock</th>
+                <th scope="col" class="py-3">isOutOfStock</th>
+                <th scope="col" class="py-3"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let product of products | paginate: { itemsPerPage: pageSize, currentPage: pageNumber,  totalItems: totalCount  }; let i = index">
+                <th scope="row">{{i+1}}.</th>
+                <td>
+                    <div style="max-width: 30px; max-height: 30px; overflow: hidden;">
+                        <img [src]="product.productImage" alt="" class="img-fluid">
+                    </div>
+                </td>
+                <!-- <td>Silver stones arabic lace</td> -->
+                <td>{{ product.title | titlecase }}</td>
+                <td>{{ product.createdBy.firstName | titlecase }}&nbsp;{{ product.createdBy.lastName | titlecase }}</td>
+                <td>{{ product.createdDate | date}}</td>
+                <td>{{ product.updatedDate | date}}</td>
+                <td>{{ product.updatedBy.firstName | titlecase}}&nbsp;{{ product.updatedBy.lastName | titlecase }}</td>
+                <td>{{ product.stock}}</td>
+                <td>{{ product.isOutOfStock}}</td>
+                <td class="text-end">
+                    <div class="btn-group">
+                        <button class="btn-success btn btn-sm"
+                            [routerLink]="['/admin/update-product/',product.id ]">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <button class="btn-danger btn btn-sm" (click)="onDeleteProduct(product.id)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+</div>

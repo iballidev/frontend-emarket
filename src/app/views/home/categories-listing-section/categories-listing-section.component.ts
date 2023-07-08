@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
 import { ProductCategory } from 'src/app/models/interfaces/product-category';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
 
@@ -12,10 +13,13 @@ export class CategoriesListingSectionComponent implements OnInit {
   constructor(private _ProductCategorySvc: ProductCategoryService) {}
 
   ngOnInit(): void {
-    this._ProductCategorySvc.getProductCategoryList().subscribe({
+    let userQuery = {
+      pageSize: 4,
+      pageNumber: 1,
+    };
+    this._ProductCategorySvc.getProductCategoryList(buildQueryParams(userQuery)).subscribe({
       next: (response: any) => {
-        console.log('response: ', response);
-        this.productCategory = response;
+        this.productCategory = response.category;
       },
       error: (err: any) => {
         console.error('error: ', err);

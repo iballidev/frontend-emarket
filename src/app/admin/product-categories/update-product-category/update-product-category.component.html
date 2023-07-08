@@ -1,16 +1,11 @@
 <!-- <p>update-product-category works!</p> -->
 <section class="container-fluid">
     <div class="d-flex align-items-center justify-content-between flex-wrap py-3">
-        <h3>Product categories</h3>
+        <h3 class="fw-semi-bold fs-300"><button class="btn ps-0" (click)="back()">
+                <i class="fas fa-arrow-left"></i>
+            </button>Product categories</h3>
         <div>
-            <form class="d-flex ms-auto w-100 mt-3 mb-1 mt-lg-0 mb-lg-0 border rounded" role="search">
-                <input class="form-control me-2 border-0" type="search" placeholder="Add new category"
-                    aria-label="Search" />
-                <button class="btn d-flex align-items-center" type="submit">
-                    <i class="fas fa-plus me-2"></i>Save
-                    <!-- <i-feather name="Search" class="search-icon"></i-feather> -->
-                </button>
-            </form>
+            <app-modal-trigger-button (triggerEvent)="openAddProductCategory($event)" [btnTitle]="btnTitle"></app-modal-trigger-button>
         </div>
     </div>
     <form #updateProductCategoryForm='ngForm' (ngSubmit)="updateProductCategoryForm.valid && update()">
@@ -30,7 +25,12 @@
                 <tr>
                     <td>
                         <div style="max-width: 30px; max-height: 30px; overflow: hidden;">
-                            <img [src]="category?.categoryFeaturedImage" alt="" class="img-fluid">
+                            <ng-container *ngIf="!previewUploadedFile; else sampleImage">
+                                <img [src]="category?.categoryFeaturedImage" alt="" class="img-fluid">
+                            </ng-container>
+                            <ng-template #sampleImage>
+                                <img [src]="previewUploadedFile" alt="" class="img-fluid">
+                            </ng-template>
                         </div>
                     </td>
                     <td>

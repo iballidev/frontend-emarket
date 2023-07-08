@@ -16,6 +16,7 @@ export class AddProductCategoryComponent implements OnInit {
   rawImg!: File;
   userProfile: any;
   file!: FormData;
+  validationError!: boolean;
 
   createProductCategoryForm!: FormGroup;
   constructor(
@@ -31,7 +32,7 @@ export class AddProductCategoryComponent implements OnInit {
       next: (response: any) => {
         if (response) {
           if (response && response?.profile)
-            console.log('userProfile: ', response);
+          
           this.userProfile = response?.profile;
         }
       },
@@ -40,11 +41,13 @@ export class AddProductCategoryComponent implements OnInit {
           if (error.status == 409) alert('Auth failed!');
           else {
             alert('An unexpected error occurred.');
-            console.log('Error: ', error);
+            // console.log('Error: ', error);
           }
         }
       },
     });
+
+    this.checkValidation();
   }
 
   buildForm() {
@@ -54,6 +57,12 @@ export class AddProductCategoryComponent implements OnInit {
     });
   }
 
+  checkValidation() {
+    if (this.createProductCategoryForm.valid || this.rawImg) {
+      if (!this.rawImg) this.validationError = true;
+      else this.validationError = false;
+    }
+  }
   onSelect(event: any) {
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
@@ -65,24 +74,23 @@ export class AddProductCategoryComponent implements OnInit {
        * */
 
       this.rawImg = this.fileInput.nativeElement.files[0];
+      this.checkValidation();
     };
   }
 
   getUserProfile() {}
 
   createCategory() {
-    console.log('model: ', this.model);
     const payload = {
       title: this.model.Title,
       categoryFeaturedImage: this.rawImg,
     };
-    console.log('payload: ', payload);
     this._productCategorySvc
       .createProductCategory(this.userProfile._id, payload)
       .subscribe((response: any) => {
         if (response) {
-          console.log('response: ', response);
-          this.activeModal.dismiss("hello");
+          // console.log('response: ', response);
+          this.activeModal.dismiss('hello');
         }
       });
   }
