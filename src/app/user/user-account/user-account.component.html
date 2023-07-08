@@ -1,0 +1,62 @@
+<!-- <p>user-account works!</p> -->
+
+<div class="container-fluid pt-3">
+    <h1 class="fw-semi-bold fs-300">My Account</h1>
+    <ul class="list-style-none ps-0 line-height-400" *ngIf="userProfile">
+        <li class="fw-semi-bold fs-200">{{userProfile?.lastName | titlecase }} {{userProfile?.firstName | titlecase}}
+        </li>
+        <li>{{userProfile?.gender | titlecase}}</li>
+        <li>{{userProfile?.nationality | titlecase}}</li>
+        <li><i class="fas fa-phone me-2"></i>{{userProfile?.phone | titlecase }}</li>
+        <li><i class="fas fa-envelope me-2"></i>{{userProfile?.user?.email | titlecase }}</li>
+        <li> <i class="fas fa-map-marker-alt me-2"></i>{{userProfile?.address?.addressLine | titlecase }}
+            <span *ngIf="userProfile?.address?.city">, {{userProfile.address.city | titlecase }}</span> <span
+                *ngIf="userProfile?.address?.state">, {{userProfile?.address?.state | titlecase }}</span>
+                <span *ngIf="userProfile?.address?.country">, {{userProfile?.address?.country | titlecase }}</span>.
+        </li>
+        <li>{{userProfile?.address?.zipCode}}</li>
+    </ul>
+    <table class="table table-striped table-hover table-sm fs-100">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col" class="py-3">S/N</th>
+                <th scope="col" class="py-3">Product image</th>
+                <th scope="col" class="py-3">Title</th>
+                <th scope="col" class="py-3">Price</th>
+                <th scope="col" class="py-3">Quantity</th>
+                <th scope="col" class="py-3">Cost</th>
+                <th scope="col" class="py-3">Order date</th>
+                <th scope="col" class="py-3">Updated date</th>
+                <th scope="col" class="py-3"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of productList; let i = index">
+                <th scope="row">{{i+1}}.</th>
+                <td>
+                    <div style="max-width: 30px; max-height: 30px; overflow: hidden;">
+                        <img [src]="product.productImage" alt="" class="img-fluid">
+                    </div>
+                </td>
+                <!-- <td>Silver stones arabic lace</td> -->
+                <td>{{ product.title | titlecase }}</td>
+                <td>{{ product.price}}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.cost}}</td>
+                <td>{{ product.orderDate | date}}</td>
+                <td>{{ product.updatedDate | date}}</td>
+                <td class="text-end">
+                    <div class="btn-group">
+                        <button class="btn-success btn btn-sm"
+                            [routerLink]="['/admin/product-categories/',product.id ]">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <button class="btn-danger btn btn-sm" (click)="onDeleteCategory(product.id)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

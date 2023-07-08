@@ -1,0 +1,98 @@
+@use "../../sass/_partials/mixins";
+.sidebar {
+    background-color: var(--clr-primary-300);
+    min-height: 100vh;
+    --itemPadd: 0.6em 0.4em;
+    position: fixed;
+    height: 100%;
+    width: 300px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 1;
+    div:first-child {
+        background-color: var(--clr-secondary-500);
+        padding: var(--itemPadd);
+        height: 60px;
+        display: flex;
+        align-items: center;
+    }
+    ul {
+        li {
+            a {
+                display: block;
+                padding: var(--itemPadd);
+                text-decoration: none;
+                color: var(--clr-accent-300);
+                font-size: var(--fs-150);
+                &:hover, &.router-link-active {
+                    background-color: var(--clr-accent-50);
+                    color: var(--base-text-color);
+                }
+            }
+        }
+    }
+}
+@include mixins.minmq(50em) {
+    .sidebar {
+        position: absolute;
+        z-index: 50000;
+    }
+}
+
+.main {
+    // background-color: red;
+    // padding-top: 2em;
+}
+
+.catchy-card {
+    min-height: 100px;
+    font-weight: var(--fw-semi-bold);
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .count {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 0.3em;
+            span {
+                &:first-child {
+                    font-size: var(--fs-300);
+                    font-weight: var(--fw-bold);
+                    margin-right: 0.5em;
+                    display: flex;
+                    align-items: flex-end;
+                    &::before {
+                        content: "\f007";
+                        font-weight: 900;
+                        font-family: "Font Awesome 5 Free";
+                        display: block;
+                        height: 40px;
+                        width: 40px;
+                        border-radius: 50%;
+                        border: 3px solid var(--base-text-color);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-right: 0.3em;
+                    }
+                }
+            }
+        }
+    }
+
+    &.primary {
+        // background-color: var(--clr-danger-400);
+        // color: var(--clr-accent-300);
+    }
+}
+
+@include mixins.minmq(50em) {
+    .main {
+        margin-left: 300px;
+        // background-color: red;
+        // padding-top: 2em;
+    }
+}

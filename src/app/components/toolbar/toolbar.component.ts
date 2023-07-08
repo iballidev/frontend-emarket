@@ -16,15 +16,18 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   navExpanded: boolean = false;
   constructor(public _authSvc: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // console.log("user=>: ", this._authSvc.currentUser)
+  }
 
   @ViewChild('navToggler') navToggler!: ElementRef;
 
   ngAfterViewInit() {
-    console.log(this.navToggler.nativeElement.innerHTML);
+    // console.log(this.navToggler.nativeElement.innerHTML);
   }
 
   toggleNav() {
     this.navExpanded = !this.navExpanded;
+    // console.log(' this.navExpanded: ', this.navExpanded);
   }
 }

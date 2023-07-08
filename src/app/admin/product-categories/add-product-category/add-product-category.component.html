@@ -1,0 +1,60 @@
+<!-- <p>add-product-category works!</p> -->
+
+<form #createProductCategoryForm='ngForm' (ngSubmit)="createProductCategoryForm.valid && createCategory()">
+    <div class="modal-header">
+        <h4 class="modal-title">Create category</h4>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <p><small>{{ description }}</small></p>
+        <div class="mb-3">
+            <label for="Title" class="form-label">Title</label>
+            <input type="text" class="form-control" name="Title" id="Title"
+                [ngClass]="{'is-invalid': Title?.touched && Title?.invalid}" [(ngModel)]="model.Title" #Title="ngModel"
+                required>
+            <small id="titleErrorMsg" class="form-text text-danger invalid-feedback">Title is required.</small>
+        </div>
+        <div class="mb-3">
+            <label for="FeaturedImage" class="form-label">Featured Image</label>
+            <input type="file" class="form-control" name="FeaturedImage" id="FeaturedImage" (change)="onSelect($event)"
+                #fileInput>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-between">
+        <button type="submit" class="btn btn-outline-dark"
+            [disabled]="createProductCategoryForm.invalid || validationError">Create</button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+    </div>
+</form>
+
+
+
+<!-- {{createProductCategoryForm.value | json}}
+
+
+<form [formGroup]="createProductCategoryForm" (ngSubmit)="createProductCategoryForm.valid && createCategory()">
+    <div class="modal-header">
+        <h4 class="modal-title">Create category</h4>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <p><small>{{ description }}</small></p>
+        <div class="mb-3">
+            <label for="Title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="Title" formControlName="Title" required>
+            <small id="titleErrorMsg" class="form-text text-danger invalid-feedback">Title is required.</small>
+        </div>
+        <div class="mb-3">
+            <label for="FeaturedImage" class="form-label">Featured Image</label>
+            <input type="file" class="form-control" id="FeaturedImage" (change)="onSelect($event)"
+                formControlName="FeaturedImage" #fileInput>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-between">
+        <button type="submit" class="btn btn-outline-dark"
+            [disabled]="createProductCategoryForm.invalid">Create</button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+    </div>
+</form> -->

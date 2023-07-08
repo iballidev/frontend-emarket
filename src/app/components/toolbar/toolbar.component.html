@@ -1,5 +1,5 @@
 <!-- <p>toolbar works!</p> -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg sticky-top">
   <div class="main-wrapper container-fluid">
     <a class="navbar-brand" [routerLink]="['/']">
       <span class="visually-hidden">Emarket brand logo</span>
@@ -52,16 +52,19 @@
             <ul ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu fs-150">
               <ng-container *ngIf="!_authSvc.isLoggedIn()">
                 <li>
-                  <a class="dropdown-item" [routerLink]="['/auth']" routerLinkActive="router-link-active">Sign in</a>
+                  <a class="dropdown-item" [routerLink]="['/app/auth']" routerLinkActive="router-link-active">Sign in</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" [routerLink]="['/auth/signup']" routerLinkActive="router-link-active">Create
+                  <a class="dropdown-item" [routerLink]="['/app/auth/signup']" routerLinkActive="router-link-active">Create
                     an Account</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
                 </li>
               </ng-container>
               <ng-container *ngIf="_authSvc.isLoggedIn()">
                 <li>
-                  <hr class="dropdown-divider" />
+                  <a class="dropdown-item" [routerLink]="['/user/my-account']" routerLinkActive="router-link-active" >My Account</a>
                 </li>
                 <li>
                   <a class="dropdown-item" [routerLink]="['/orders']" routerLinkActive="router-link-active" >Orders</a>

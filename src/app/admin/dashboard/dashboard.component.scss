@@ -1,0 +1,90 @@
+@use "../../../sass/_partials/mixins";
+
+
+.main {
+    // background-color: red;
+    padding-top: 2em;
+}
+
+.catchy-card {
+    min-height: 100px;
+    font-weight: var(--fw-semi-bold);
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .count {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 0.3em;
+            span {
+                &:first-child {
+                    font-size: var(--fs-300);
+                    font-weight: var(--fw-bold);
+                    margin-right: 0.5em;
+                    display: flex;
+                    align-items: flex-end;
+                    &::before {
+                        content: "\f007";
+                        font-weight: 900;
+                        font-family: "Font Awesome 5 Free";
+                        display: block;
+                        height: 40px;
+                        width: 40px;
+                        border-radius: 50%;
+                        border: 3px solid var(--base-text-color);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-right: 0.3em;
+                    }
+                }
+            }
+        }
+    }
+
+    &.primary {
+        // background-color: var(--clr-danger-400);
+        // color: var(--clr-accent-300);
+    }
+}
+
+@include mixins.minmq(50em) {
+    .main {
+        margin-left: 300px;
+        // background-color: red;
+        padding-top: 2em;
+    }
+}
+
+table{
+    thead tr th:first-child, tbody tr th:first-child{
+        padding-left: 1em;
+    }
+    thead tr th:last-child, tbody tr td:last-child{
+        padding-right: 1em;
+    }
+    // thead, tbody{
+    //     tr{
+    //         th{
+    //         }
+    //     }
+    // }
+    thead{
+        th{
+            padding-top: .7em;
+            padding-bottom: .7em;
+        }
+    }
+
+    tbody{
+        td{
+            // div{
+            //     height: 100%;
+            //     background-color: red;
+            //     display: flex;
+            //     align-items: center;
+            // }
+        }
+    }
+}

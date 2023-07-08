@@ -1,0 +1,61 @@
+<!-- <p>update-product-category works!</p> -->
+<section class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between flex-wrap py-3">
+        <h3 class="fw-semi-bold fs-300"><button class="btn ps-0" (click)="back()">
+                <i class="fas fa-arrow-left"></i>
+            </button>Product categories</h3>
+        <div>
+            <app-modal-trigger-button (triggerEvent)="openAddProductCategory($event)" [btnTitle]="btnTitle"></app-modal-trigger-button>
+        </div>
+    </div>
+    <form #updateProductCategoryForm='ngForm' (ngSubmit)="updateProductCategoryForm.valid && update()">
+        <table class="table table-striped table-hover table-sm fs-100">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="py-3">Featured image</th>
+                    <th scope="col" class="py-3">Upload/Replace image</th>
+                    <th scope="col" class="py-3">Title</th>
+                    <th scope="col" class="py-3">Created by</th>
+                    <th scope="col" class="py-3">Created date</th>
+                    <th scope="col" class="py-3">Updated date</th>
+                    <th scope="col" class="py-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div style="max-width: 30px; max-height: 30px; overflow: hidden;">
+                            <ng-container *ngIf="!previewUploadedFile; else sampleImage">
+                                <img [src]="category?.categoryFeaturedImage" alt="" class="img-fluid">
+                            </ng-container>
+                            <ng-template #sampleImage>
+                                <img [src]="previewUploadedFile" alt="" class="img-fluid">
+                            </ng-template>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="file" class="p-1 w-100" name="" id="" (change)="onChange($event)">
+                    </td>
+                    <!-- <td>Silver stones arabic lace</td> -->
+                    <td>
+                        <input type="text" class="p-1 w-100" name="Title"
+                            [ngClass]="{'is-invalid': Title?.touched && Title?.invalid}" [(ngModel)]="model.Title"
+                            #Title="ngModel" required>
+                        <small id="titleErrorMsg" class="form-text text-danger invalid-feedback">Title is
+                            required.</small>
+                    </td>
+                    <td>{{category?.createdBy?.lastName}} {{category?.createdBy?.firstName}}</td>
+                    <td>{{category?.createdDate | date}}</td>
+                    <td>{{category?.updatedDate | date}}</td>
+                    <td class="text-end">
+                        <div class="btn-group">
+                            <button class="btn-success btn btn-sm" (click)="update()">
+                                Save
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</section>
