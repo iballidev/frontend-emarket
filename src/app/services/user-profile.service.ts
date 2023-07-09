@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { userProfileUrl } from '../config/api';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -11,10 +11,25 @@ export class UserProfileService {
   currentUser: any;
   constructor(private _http: HttpClient, private _authSvc: AuthService) {
     this.currentUser = this._authSvc.currentUser;
+    console.log(' this.currentUser: ', this.currentUser);
   }
 
   getUserProfile(): Observable<any> {
     return this._http.get<any>(userProfileUrl + '/' + this.currentUser?.userId);
+  }
+
+  updateUserProfile(profile: any) {
+    return this._http.post<any>(
+      userProfileUrl + '/' + this.currentUser?.userId,
+      profile
+    );
+  }
+
+  updateUserProfileImage(profileImage: any): Observable<any> {
+    return this._http.patch<any>(
+      userProfileUrl + '/profile-image/' + this.currentUser?.userId,
+      profileImage
+    );
   }
 
   /**Http Headers */
@@ -28,7 +43,7 @@ import { RequestOptions, Headers } from '@angular/http';
     let options = new RequestOptions({headers: headers})
 
     return this.http.get("/endpoint", options)
-    .map(response=>response.json());
+    .map(err=>response.json());
   }
 
 

@@ -112,4 +112,6 @@ export class AddProductComponent implements OnInit {
   back() {
     history.back();
   }
+
+  /** */
 }

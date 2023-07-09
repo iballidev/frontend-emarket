@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { authUrl, refreshTokenUrl } from '../config/api';
+import { authUrl, logoutUrl, refreshTokenUrl } from '../config/api';
 import { HttpClient } from '@angular/common/http';
 import { LoginUser, SignupUser } from '../models/interfaces/user';
 import { Observable, catchError, map, throwError } from 'rxjs';
@@ -14,19 +14,19 @@ export class AuthService {
   authUrl = `${authUrl}`;
   signupUrl = `${authUrl}/signup`;
   constructor(
-    private _http: HttpClient,
+    private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router
   ) {}
   // const err = new Error('test'); throwError(() => err);.
   SignupUser(payload: SignupUser) {
-    return this._http
+    return this.http
       .post(this.signupUrl, payload)
       .pipe(catchError((err: Response) => throwError(() => new AppError(err))));
   }
 
   LoginUser(payload: LoginUser) {
-    return this._http.post(this.authUrl, payload).pipe(
+    return this.http.post(this.authUrl, payload).pipe(
       map((response: any) => {
         // console.log('response svc: ', response);
         if (response && response.token) {
@@ -68,11 +68,18 @@ export class AuthService {
   }
 
   LogoutUser() {
+    this.http.get(logoutUrl).subscribe({
+      next: () => {},
+      error: (err: any) => {
+        console.error('Error: ', err);
+      },
+    });
     if (localStorage.getItem('token')) localStorage.removeItem('token');
+    this.router.navigate(['/app/auth']);
   }
 
   get RefreshToken() {
-    return this._http.get(refreshTokenUrl).pipe(
+    return this.http.get(refreshTokenUrl).pipe(
       map((response: any) => {
         console.log('response svc: ', response);
         if (response && response.token) {
@@ -83,7 +90,7 @@ export class AuthService {
         }
       })
     );
-    // return this._http
+    // return this.http
     //   .post<UserModel>(this.RefreshTokenUrl, {
     //     refreshtoken,
     //   })

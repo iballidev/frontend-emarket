@@ -17,6 +17,7 @@ import {
   throwError,
 } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -24,7 +25,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private RefreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
   );
-  constructor(private _authSvc: AuthService) {}
+  constructor(private _authSvc: AuthService, private router: Router) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -45,6 +46,8 @@ export class TokenInterceptor implements HttpInterceptor {
         ) {
           return this.Handle401Error(request, next);
         }
+
+        if(err.status === 403) this.router.navigate(['/app/auth'])
         return throwError(() => err);
       })
     );

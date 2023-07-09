@@ -7,9 +7,22 @@ import { SharedModule } from '../shared/shared.module';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { UserOrdersComponent } from './user-orders/user-orders.component';
 import { UserShoppingCartComponent } from './user-shopping-cart/user-shopping-cart.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [UserComponent, UserAccountComponent, WishlistComponent, UserOrdersComponent, UserShoppingCartComponent],
-  imports: [CommonModule, UserRoutingModule, SharedModule],
+  declarations: [
+    UserComponent,
+    UserAccountComponent,
+    WishlistComponent,
+    UserOrdersComponent,
+    UserShoppingCartComponent,
+  ],
+  imports: [
+    CommonModule,
+    UserRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+  ],
 })
 export class UserModule {}

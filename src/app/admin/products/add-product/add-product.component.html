@@ -4,6 +4,8 @@
     <h3 class="fw-semi-bold fs-300 py-3"><button class="btn ps-0" (click)="back()">
             <i class="fas fa-arrow-left"></i>
         </button>Add product</h3>
+
+        
     <div>
         {{addProductForm.valid}}
         <form [formGroup]="addProductForm" (ngSubmit)="submitProduct(addProductForm.value)">
