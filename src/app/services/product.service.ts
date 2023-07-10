@@ -3,12 +3,30 @@ import { Injectable } from '@angular/core';
 import { productUrl } from '../config/api';
 import { Observable, map } from 'rxjs';
 import { AuthService } from './auth.service';
+import { UserProfileService } from './user-profile.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  constructor(private _http: HttpClient, private _authSvc: AuthService) {}
+  userProfile: any;
+  constructor(
+    private _http: HttpClient,
+    private _authSvc: AuthService,
+    private _userProfileSvc: UserProfileService
+  ) {
+    this._userProfileSvc.getUserProfile().subscribe({
+      next: (response: any) => {
+        console.log('response: ', response);
+        this.userProfile = response;
+      },
+      error: (err) => {
+        if (err) {
+          console.error('Error: ', err);
+        }
+      },
+    });
+  }
 
   getProductCategoryList(queryParams?: any): Observable<any> {
     return this._http.get<any>(`${productUrl}/all${queryParams}`).pipe(
@@ -39,10 +57,32 @@ export class ProductService {
     );
   }
 
-  createNewProduct(Product: Product) {
+  createNewProduct(Product: any) {
+    let prop = new FormData();
+    for (const key in Product) {
+      // console.log(key, Product[key], '\n');
+      if (key === 'categories') {
+        // console.log('typeof Product[key]', typeof Product[key]);
+        let count = 0;
+        while (count <= Product[key].length) {
+          // console.log('key[count]: ', key[count]);
+          console.log(key + `[${count}]`, Product[key][count]);
+          prop.append(key + `[${count}]`, Product[key][count]);
+          count++;
+        }
+      }
+      prop.append(key, Product[key]);
+    }
+
+    console.log('prop: ', prop);
+
+    // let fileForm = new FormData();
+    // fileForm.append('productImge', file);
+    // console.log('fileForm: ', fileForm);
+
     return this._http.post(
-      `${productUrl}/${this._authSvc.currentUser._id}`,
-      Product
+      `${productUrl}/${this.userProfile?.profile._id}`,
+      prop
     );
   }
 }

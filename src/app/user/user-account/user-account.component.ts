@@ -43,11 +43,14 @@ export class UserAccountComponent implements OnInit {
 
   countryList!: any;
   gender: any[] = ['male', 'female'];
+  isProfileUpdating!: boolean;
   constructor(
     private _userProfileSvc: UserProfileService,
+    private _authSvc: AuthService,
     private fb: FormBuilder,
     private _countryListSvc: CountryListService
-  ) {}
+  ) {
+    this.userEmail = this._authSvc.currentUser?.email;}
 
   ngOnInit(): void {
     this.getUserProfile();
@@ -63,7 +66,6 @@ export class UserAccountComponent implements OnInit {
     this.isUploading = true;
     this._userProfileSvc.updateUserProfileImage(formData).subscribe({
       next: (response) => {
-        console.log('response: ', response);
         this.getUserProfile();
         this.isUploading = false;
       },
@@ -139,15 +141,14 @@ export class UserAccountComponent implements OnInit {
           if (response && response?.profile)
             console.log('response?.profile: ', response?.profile);
           this.userProfile = response?.profile;
-          this.userEmail = this.userProfile?.user.email;
           this.setForm(this.userProfile);
         }
       },
       error: (error: Response) => {
         if (error) {
-          if (error.status == 409) alert('Auth failed!');
+          if (error.status == 409) console.log('Auth failed!');
           else {
-            alert('An unexpected error occurred.');
+            console.log('An unexpected error occurred.');
             console.log('Error: ', error);
           }
         }
@@ -157,13 +158,16 @@ export class UserAccountComponent implements OnInit {
 
   saveProfile(data: any) {
     console.log('data: ', data);
+    this.isProfileUpdating = true;
     this._userProfileSvc.updateUserProfile(data).subscribe({
       next: (response: any) => {
         console.log('response: ', response);
+        this.isProfileUpdating = false;
       },
-      error(err) {
+      error:(err)=>{
         if (err) {
           console.error('Error: ', err);
+          this.isProfileUpdating = false;
         }
       },
     });

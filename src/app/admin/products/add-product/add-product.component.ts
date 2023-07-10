@@ -17,6 +17,7 @@ export class AddProductComponent implements OnInit {
   selectedItems: any[] = [];
   dropdownSettings: IDropdownSettings = {};
   isMultiSeletDropdownTouched: boolean = false;
+  categoryList: any;
   constructor(
     private _productCategorySvc: ProductCategoryService,
     private formBuilder: FormBuilder,
@@ -71,12 +72,23 @@ export class AddProductComponent implements OnInit {
 
   onItemSelect(item: any) {
     this.isMultiSeletDropdownTouched = true;
-    console.log(item);
-    this.addProductForm.controls['categories'].setValue(this.selectedItems);
-    console.log(' this.addProductForm : ', this.addProductForm.value);
+
+    let arr: string[] = [];
+    this.selectedItems.forEach((item) => {
+      arr.push(item.id);
+    });
+
+    this.addProductForm.controls['categories'].setValue(arr);
   }
+
   onSelectAll(items: any) {
-    console.log(items);
+    let arr: string[] = [];
+    items.forEach((item:any) => {
+      arr.push(item.id);
+    });
+
+    this.addProductForm.controls['categories'].setValue(arr);
+    
   }
 
   getProductCategory() {
@@ -100,9 +112,6 @@ export class AddProductComponent implements OnInit {
     console.log('$event: ', $event.target.files[0]);
     console.log('title: ', this.title);
     let file = $event.target.files[0];
-    let fileForm = new FormData();
-    fileForm.append('productImge', file);
-    console.log('fileForm: ', fileForm);
     this.addProductForm.controls['productImage'].setValue(file);
     console.log(' this.addProductForm : ', this.addProductForm.value);
   }

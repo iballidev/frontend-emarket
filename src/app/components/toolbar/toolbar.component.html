@@ -23,39 +23,42 @@
       </div>
     </div>
 
-    <form class="d-flex ms-auto w-100 mt-3 mb-1 mt-lg-0 mb-lg-0" role="search">
+    <!-- <form class="d-flex ms-auto w-100 mt-3 mb-1 mt-lg-0 mb-lg-0" role="search">
       <input class="form-control me-2" type="search" placeholder="Search Emarket" aria-label="Search" />
       <button class="btn" type="submit">
         <i-feather name="Search" class="search-icon"></i-feather>
       </button>
-    </form>
-    <div class="collapse navbar-collapse" [ngClass]="{ show: navExpanded }" id="navbarSupportedContent">
-      <!-- <form class="d-flex ms-auto w-100" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search Emarket" aria-label="Search" />
-                <button class="btn" type="submit"> <i-feather name="Search" class="search-icon"></i-feather></button>
-            </form> -->
+    </form> -->
+    <div class="collapse navbar-collapse rounded-3 px-2" [ngClass]="{ show: navExpanded }" id="navbarSupportedContent">
+      <form class="d-flex ms-auto w-100 mt-2 mt-sm-0" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search Emarket" aria-label="Search" />
+        <button class="btn" type="submit"> <i-feather name="Search" class="search-icon"></i-feather></button>
+      </form>
       <ul class="navbar-nav mb-2 mb-lg-0">
         <!-- <li class="nav-item">
                     <a class="nav-link active" aria-current="page" [routerLink]="['/']"
                         routerLinkActive="router-link-active">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li> -->
+                </li>-->
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/admin']" routerLinkActive="router-link-active" >Admin</a>
+        </li>
         <li class="nav-item dropdown">
           <div ngbDropdown class="d-inline-block">
             <button id="dropdownBasic1" ngbDropdownToggle class="nav-link dropdown-toggle" href="#" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
               <ng-template #AccountPlaceholder>Account</ng-template>
-              <ng-container *ngIf="_authSvc.currentUser; else AccountPlaceholder">{{_authSvc.currentUser.email}}</ng-container>
+              <ng-container
+                *ngIf="_authSvc.currentUser; else AccountPlaceholder">{{_authSvc.currentUser.email}}</ng-container>
             </button>
             <ul ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu fs-150">
               <ng-container *ngIf="!_authSvc.isLoggedIn()">
                 <li>
-                  <a class="dropdown-item" [routerLink]="['/app/auth']" routerLinkActive="router-link-active">Sign in</a>
+                  <a class="dropdown-item" [routerLink]="['/app/auth']" routerLinkActive="router-link-active">Sign
+                    in</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" [routerLink]="['/app/auth/signup']" routerLinkActive="router-link-active">Create
+                  <a class="dropdown-item" [routerLink]="['/app/auth/signup']"
+                    routerLinkActive="router-link-active">Create
                     an Account</a>
                 </li>
                 <li>
@@ -64,10 +67,11 @@
               </ng-container>
               <ng-container *ngIf="_authSvc.isLoggedIn()">
                 <li>
-                  <a class="dropdown-item" [routerLink]="['/user/my-account']" routerLinkActive="router-link-active" >My Account</a>
+                  <a class="dropdown-item" [routerLink]="['/user/my-account']" routerLinkActive="router-link-active">My
+                    Account</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" [routerLink]="['/orders']" routerLinkActive="router-link-active" >Orders</a>
+                  <a class="dropdown-item" [routerLink]="['/orders']" routerLinkActive="router-link-active">Orders</a>
                 </li>
                 <li>
                   <a class="dropdown-item" href="#">Wishlist</a>

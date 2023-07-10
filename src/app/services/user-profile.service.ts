@@ -3,15 +3,21 @@ import { Injectable } from '@angular/core';
 import { userProfileUrl } from '../config/api';
 import { Observable, map } from 'rxjs';
 import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserProfileService {
   currentUser: any;
-  constructor(private _http: HttpClient, private _authSvc: AuthService) {
+  constructor(
+    private _http: HttpClient,
+    private _authSvc: AuthService,
+    private router: Router
+  ) {
     this.currentUser = this._authSvc.currentUser;
     console.log(' this.currentUser: ', this.currentUser);
+    if (!this.currentUser) this.router.navigate(['/']);
   }
 
   getUserProfile(): Observable<any> {
@@ -26,6 +32,7 @@ export class UserProfileService {
   }
 
   updateUserProfileImage(profileImage: any): Observable<any> {
+    console.log('profileImage: ', profileImage);
     return this._http.patch<any>(
       userProfileUrl + '/profile-image/' + this.currentUser?.userId,
       profileImage
