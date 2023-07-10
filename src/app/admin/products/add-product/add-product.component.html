@@ -7,7 +7,7 @@
 
         
     <div>
-        {{addProductForm.valid}}
+        <!-- {{addProductForm.valid}} -->
         <form [formGroup]="addProductForm" (ngSubmit)="submitProduct(addProductForm.value)">
             <div class="row">
                 <div class="col-sm-8 mb-3">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-sm-4 mb-3">
                     <label for="stock" class="form-label">Stock</label>
-                    <input type="number" class="form-control" id="stock" aria-describedby="stockHelp"
+                    <input type="number" class="form-control" id="stock" aria-describedby="stockHelp" min="1"
                         formControlName="stock" required [ngClass]="{'is-invalid': stock?.invalid && stock?.touched }">
                 </div>
                 <div class="col-12 mb-3">

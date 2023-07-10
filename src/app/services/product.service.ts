@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { productUrl } from '../config/api';
 import { Observable, map } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient, private _authSvc: AuthService) {}
 
   getProductCategoryList(queryParams?: any): Observable<any> {
     return this._http.get<any>(`${productUrl}/all${queryParams}`).pipe(
@@ -37,4 +38,19 @@ export class ProductService {
       })
     );
   }
+
+  createNewProduct(Product: Product) {
+    return this._http.post(
+      `${productUrl}/${this._authSvc.currentUser._id}`,
+      Product
+    );
+  }
+}
+
+interface Product {
+  title: string;
+  productImage: File;
+  description: string;
+  stock: number;
+  categories: string[];
 }

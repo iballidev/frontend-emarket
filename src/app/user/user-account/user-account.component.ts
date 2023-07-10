@@ -61,21 +61,19 @@ export class UserAccountComponent implements OnInit {
     formData.append('profileImage', file);
 
     this.isUploading = true;
-    this._userProfileSvc
-      .updateUserProfileImage(formData)
-      .subscribe(
-        (response) => {
-          console.log('response: ', response);
-          this.getUserProfile();
+    this._userProfileSvc.updateUserProfileImage(formData).subscribe({
+      next: (response) => {
+        console.log('response: ', response);
+        this.getUserProfile();
+        this.isUploading = false;
+      },
+      error: (error) => {
+        if (error) {
+          console.error('Error: ', error);
           this.isUploading = false;
-        },
-        (error) => {
-          if (error) {
-            console.error('Error: ', error);
-            this.isUploading = false;
-          }
         }
-      );
+      },
+    });
   }
 
   get address(): any {
@@ -117,20 +115,20 @@ export class UserAccountComponent implements OnInit {
   }
 
   getCountryList() {
-    this._countryListSvc.getCountryList().subscribe(
-      (response) => {
+    this._countryListSvc.getCountryList().subscribe({
+      next: (response) => {
         console.log('countryList: ', response);
         if (!response && !response?.data) return;
         this.countryList = response.data.sort((a: any, b: any) =>
           a.name.localeCompare(b.name)
         );
       },
-      (error) => {
+      error: (error) => {
         if (error) {
           console.log('error: ', error);
         }
-      }
-    );
+      },
+    });
   }
 
   getUserProfile() {
