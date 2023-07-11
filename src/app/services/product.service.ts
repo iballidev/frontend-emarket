@@ -60,30 +60,25 @@ export class ProductService {
   createNewProduct(Product: any) {
     let prop = new FormData();
     for (const key in Product) {
-      // console.log(key, Product[key], '\n');
       if (key === 'categories') {
-        // console.log('typeof Product[key]', typeof Product[key]);
-        let count = 0;
-        while (count <= Product[key].length) {
-          // console.log('key[count]: ', key[count]);
-          console.log(key + `[${count}]`, Product[key][count]);
-          prop.append(key + `[${count}]`, Product[key][count]);
-          count++;
-        }
+        /**Loop through the array value for categories and appending with the formData */
+        Product[key].forEach((element: any, index: any) => {
+          prop.append(`categories[${index}]`, element);
+        });
+      } else {
+        prop.append(key, Product[key]);
       }
-      prop.append(key, Product[key]);
     }
-
-    console.log('prop: ', prop);
-
-    // let fileForm = new FormData();
-    // fileForm.append('productImge', file);
-    // console.log('fileForm: ', fileForm);
-
     return this._http.post(
       `${productUrl}/${this.userProfile?.profile._id}`,
       prop
     );
+  }
+
+  deleteProductById(queryParams?: any) {
+    console.warn(queryParams);
+    console.warn(queryParams.slice(4));
+    return this._http.delete<any>(`${productUrl}/${queryParams.slice(4)}`)
   }
 }
 

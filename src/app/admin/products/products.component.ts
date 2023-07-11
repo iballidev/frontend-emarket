@@ -49,7 +49,22 @@ export class ProductsComponent implements OnInit {
     this._router.navigate(['/admin/add-product']);
   }
 
-  onDeleteProduct(product: any) {}
+  onDeleteProduct(productId: any) {
+    let userQuery = {
+      id: productId,
+    };
+    this._productSvc.deleteProductById(buildQueryParams(userQuery)).subscribe({
+      next: (value) => {
+        if (value) {
+          console.log('response: ', value);
+          this.getAllProducts();
+        }
+      },
+      error: (err) => {
+        console.error('error: ', err);
+      },
+    });
+  }
 
   openAddProductCategory($event: boolean) {}
 

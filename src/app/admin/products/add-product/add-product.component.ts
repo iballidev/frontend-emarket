@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
@@ -21,7 +22,8 @@ export class AddProductComponent implements OnInit {
   constructor(
     private _productCategorySvc: ProductCategoryService,
     private formBuilder: FormBuilder,
-    private _productSvc: ProductService
+    private _productSvc: ProductService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -83,12 +85,11 @@ export class AddProductComponent implements OnInit {
 
   onSelectAll(items: any) {
     let arr: string[] = [];
-    items.forEach((item:any) => {
+    items.forEach((item: any) => {
       arr.push(item.id);
     });
 
     this.addProductForm.controls['categories'].setValue(arr);
-    
   }
 
   getProductCategory() {
@@ -119,12 +120,13 @@ export class AddProductComponent implements OnInit {
   submitProduct(data: any) {
     console.log('data: ', data);
     this._productSvc.createNewProduct(data).subscribe({
-      next(response: any) {
+      next: (response: any) => {
         if (response) {
           console.log('response: ', response);
+          this.router.navigate(['/admin/products']);
         }
       },
-      error(err) {
+      error: (err) => {
         if (err) {
           console.log('Error: ', err);
         }
