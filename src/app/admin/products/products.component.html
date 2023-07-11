@@ -29,6 +29,11 @@
             </tr>
         </thead>
         <tbody>
+            <tr *ngIf="!products?.length">
+                <th scope="row" colspan="10" class="text-center py-5">
+                    No product
+                </th>
+            </tr>
             <tr
                 *ngFor="let product of products | paginate: { itemsPerPage: pageSize, currentPage: pageNumber,  totalItems: totalCount  }; let i = index">
                 <th scope="row">{{i+1}}.</th>
@@ -60,5 +65,5 @@
         </tbody>
     </table>
     
-    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+    <pagination-controls (pageChange)="pageChangeEvent($event)" *ngIf="products?.length"></pagination-controls>
 </div>

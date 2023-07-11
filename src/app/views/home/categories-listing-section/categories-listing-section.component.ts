@@ -14,7 +14,7 @@ export class CategoriesListingSectionComponent implements OnInit {
 
   ngOnInit(): void {
     let userQuery = {
-      pageSize: 4,
+      pageSize: 6,
       pageNumber: 1,
     };
     this._ProductCategorySvc.getProductCategoryList(buildQueryParams(userQuery)).subscribe({

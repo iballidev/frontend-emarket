@@ -30,6 +30,11 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'orders', component: OrdersComponent },
+      {
+        path: 'ui-design',
+        loadChildren: () =>
+          import('./ui-design/ui-design.module').then((mod) => mod.UiDesignModule),
+      },
     ],
   },
 ];

@@ -29,7 +29,7 @@
         <tbody>
             <tr *ngIf="!categoryList?.length">
                 <th scope="row" colspan="7" class="text-center py-5">
-                    no category
+                    No category
                 </th>
             </tr>
             <tr *ngFor="let category of categoryList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber,  totalItems: totalCount  }; let i = index">
