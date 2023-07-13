@@ -8,4 +8,5 @@ export type QueryParamsModel = {
   AlphabeticalOrder?: boolean;
   Status?: string;
   Region?: string;
+  SearchTerm?: string;
 };

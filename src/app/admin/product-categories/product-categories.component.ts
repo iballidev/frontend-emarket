@@ -83,8 +83,7 @@ export class ProductCategoriesComponent implements OnInit {
     console.log('Paginate: ', this.pageSize, this.pageNumber);
     const queryParams = {
       pageSize: this.pageSize,
-      pageNumber: this.pageNumber,
-      s: 2,
+      pageNumber: this.pageNumber
     };
     let userQuery = {
       pageSize: queryParams.pageSize,

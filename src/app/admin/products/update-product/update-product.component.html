@@ -1,21 +1,65 @@
 <!-- <p>update-product works!</p> -->
 
+
 <div class="container-fluid">
-    <h1 class="fw-semi-bold fs-300 py-3">Update product</h1>
-    <form>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    <h3 class="fw-semi-bold fs-300 py-3"><button class="btn ps-0" (click)="back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>Update product</h3>
+    <!-- {{updateProductForm.valid}} -->
+
+    <div class="product-image-wrap">
+        <img [src]="dbProductImage" [alt]="dbProductTitle" class="img-fluid mb-3">
+    </div>
+    <form [formGroup]="updateProductForm" (ngSubmit)="submitProduct(updateProductForm.value)">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" aria-describedby="titleHelp" formControlName="title"
+                    required [ngClass]="{'is-invalid': title?.invalid && title?.touched }">
+                <div id="titleHelp" class="form-text invalid-feedback">Select a title for your product.</div>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" aria-describedby="priceHelp" min="1"
+                    formControlName="price" required [ngClass]="{'is-invalid': price?.invalid && price?.touched }">
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stock" aria-describedby="stockHelp" min="1"
+                    formControlName="stock" required [ngClass]="{'is-invalid': stock?.invalid && stock?.touched }">
+            </div>
+            <div class="col-12 mb-3">
+                <label class="form-label">Category(ies)</label>
+                <ng-multiselect-dropdown class="h-100" [placeholder]="'Select a category'" [settings]="dropdownSettings"
+                    [data]="productCategoryList" [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                    (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>
+                <div id="productImageHelp" class="form-text text-danger"
+                    *ngIf="isMultiSeletDropdownTouched && !selectedItems.length">Select a product image.</div>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="isOutOfStock" formControlName="isOutOfStock">
+                    <label class="form-check-label cursor-pointer" for="isOutOfStock">Out of stock</label>
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <label for="productImage" class="form-label">Replace image</label>
+                <input type="file" class="form-control" id="productImage" aria-describedby="productImageHelp"
+                    (change)="onSelectImage($event)" required
+                    [ngClass]="{'is-invalid': productImage?.invalid && productImage?.touched }">
+            </div>
+            <div class="col-12 mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" name="description" id="description" cols="30" rows="10"
+                    formControlName="description"></textarea>
+            </div>
+
         </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+<!-- 
+        <button type="submit" class="btn btn-primary"
+            [disabled]="updateProductForm.invalid || productImage?.invalid || !selectedItems.length">Save</button> -->
+            <button type="submit" class="btn btn-primary"
+                [disabled]="updateProductForm.invalid || !selectedItems.length">Save</button>
     </form>
 </div>

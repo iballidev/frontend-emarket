@@ -3,13 +3,30 @@ import { Injectable } from '@angular/core';
 import { ProductCategory } from '../models/interfaces/product-category';
 import { Observable, map } from 'rxjs';
 import { productCategoryUrl } from '../config/api';
+import { UserProfileService } from './user-profile.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductCategoryService {
+  userProfile: any;
   // productCategoryUr =
-  constructor(private _http: HttpClient) {}
+  constructor(
+    private _http: HttpClient,
+    private _userProfileSvc: UserProfileService
+  ) {
+    this._userProfileSvc.getUserProfile().subscribe({
+      next: (response: any) => {
+        console.log('response: ', response);
+        this.userProfile = response;
+      },
+      error: (err) => {
+        if (err) {
+          console.error('Error: ', err);
+        }
+      },
+    });
+  }
 
   createProductCategory(UserProfileId: string, Payload: any) {
     const formData = new FormData();
@@ -55,7 +72,10 @@ export class ProductCategoryService {
     for (let prop in Payload) {
       formData.append(prop, Payload[prop]);
     }
-    return this._http.patch(productCategoryUrl + '/' + CategoryId, formData);
+    return this._http.patch(
+      `${productCategoryUrl}/${CategoryId}/${this.userProfile.profile._id}`,
+      formData
+    );
   }
 
   deleteProductCategory(CategoryId: string) {

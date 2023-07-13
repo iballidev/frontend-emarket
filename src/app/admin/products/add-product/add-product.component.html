@@ -4,49 +4,49 @@
     <h3 class="fw-semi-bold fs-300 py-3"><button class="btn ps-0" (click)="back()">
             <i class="fas fa-arrow-left"></i>
         </button>Add product</h3>
-
-        
-    <div>
-        <!-- {{addProductForm.valid}} -->
-        <form [formGroup]="addProductForm" (ngSubmit)="submitProduct(addProductForm.value)">
-            <div class="row">
-                <div class="col-sm-8 mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title" aria-describedby="titleHelp"
-                        formControlName="title" required [ngClass]="{'is-invalid': title?.invalid && title?.touched }">
-                    <div id="titleHelp" class="form-text invalid-feedback">Select a title for your product.</div>
-                </div>
-                <div class="col-sm-4 mb-3">
-                    <label for="stock" class="form-label">Stock</label>
-                    <input type="number" class="form-control" id="stock" aria-describedby="stockHelp" min="1"
-                        formControlName="stock" required [ngClass]="{'is-invalid': stock?.invalid && stock?.touched }">
-                </div>
-                <div class="col-12 mb-3">
-                    <label class="form-label">Category(ies)</label>
-                    <ng-multiselect-dropdown class="h-100" [placeholder]="'Select a category'"
-                        [settings]="dropdownSettings" [data]="productCategoryList" [(ngModel)]="selectedItems"
-                        [ngModelOptions]="{standalone: true}" (onSelect)="onItemSelect($event)"
-                        (onSelectAll)="onSelectAll($event)">
-                    </ng-multiselect-dropdown>
-                    <div id="productImageHelp" class="form-text text-danger"
-                        *ngIf="isMultiSeletDropdownTouched && !selectedItems.length">Select a product image.</div>
-                </div>
-                <div class="col-12 mb-3">
-                    <label for="productImage" class="form-label">Upload image</label>
-                    <input type="file" class="form-control" id="productImage" aria-describedby="productImageHelp"
-                        (change)="onSelectImage($event)" required
-                        [ngClass]="{'is-invalid': productImage?.invalid && productImage?.touched }">
-                </div>
-                <div class="col-12 mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" name="description" id="description" cols="30" rows="10"
-                        formControlName="description" required
-                        [ngClass]="{'is-invalid': description?.invalid && description?.touched }"></textarea>
-                </div>
-
+    <!-- {{addProductForm.valid}} -->
+    <form [formGroup]="addProductForm" (ngSubmit)="submitProduct(addProductForm.value)">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" aria-describedby="titleHelp" formControlName="title"
+                    required [ngClass]="{'is-invalid': title?.invalid && title?.touched }">
+                <div id="titleHelp" class="form-text invalid-feedback">Select a title for your product.</div>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" aria-describedby="priceHelp" min="1"
+                    formControlName="price" required [ngClass]="{'is-invalid': price?.invalid && price?.touched }">
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stock" aria-describedby="stockHelp" min="1"
+                    formControlName="stock" required [ngClass]="{'is-invalid': stock?.invalid && stock?.touched }">
+            </div>
+            <div class="col-12 mb-3">
+                <label class="form-label">Category(ies)</label>
+                <ng-multiselect-dropdown class="h-100" [placeholder]="'Select a category'" [settings]="dropdownSettings"
+                    [data]="productCategoryList" [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                    (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>
+                <div id="productImageHelp" class="form-text text-danger"
+                    *ngIf="isMultiSeletDropdownTouched && !selectedItems.length">Select a product image.</div>
+            </div>
+            <div class="col-12 mb-3">
+                <label for="productImage" class="form-label">Upload image</label>
+                <input type="file" class="form-control" id="productImage" aria-describedby="productImageHelp"
+                    (change)="onSelectImage($event)" required
+                    [ngClass]="{'is-invalid': productImage?.invalid && productImage?.touched }">
+            </div>
+            <div class="col-12 mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" name="description" id="description" cols="30" rows="10"
+                    formControlName="description"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary"
-                [disabled]="addProductForm.invalid || productImage?.invalid || !selectedItems.length">Save</button>
-        </form>
-    </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary"
+            [disabled]="addProductForm.invalid || productImage?.invalid || !selectedItems.length">Save</button>
+    </form>
+</div>

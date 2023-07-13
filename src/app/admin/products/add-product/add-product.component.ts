@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
+import { Product } from 'src/app/models/interfaces/product';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -45,6 +46,7 @@ export class AddProductComponent implements OnInit {
   buildForm() {
     this.addProductForm = this.formBuilder.group({
       title: ['', Validators.required],
+      price: [null, Validators.required],
       stock: [20, Validators.required],
       categories: [],
       productImage: [null, Validators.required],
@@ -54,6 +56,10 @@ export class AddProductComponent implements OnInit {
 
   get title() {
     return this.addProductForm.get('title');
+  }
+
+  get price() {
+    return this.addProductForm.get('price');
   }
 
   get categories() {
@@ -119,7 +125,8 @@ export class AddProductComponent implements OnInit {
 
   submitProduct(data: any) {
     console.log('data: ', data);
-    this._productSvc.createNewProduct(data).subscribe({
+    const payload: Product = { ...data };
+    this._productSvc.createNewProduct(payload).subscribe({
       next: (response: any) => {
         if (response) {
           console.log('response: ', response);

@@ -1,0 +1,9 @@
+
+export enum FilterDropdown {
+    ASCENDING = 'ASCENDING',
+    DESCENDING = 'DESCENDING',
+    DATE_CREATED = 'DATE_CREATED',
+    HIGHEST_PRICE = 'HIGHEST_PRICE',
+    LOWEST_PRICE = 'LOWEST_PRICE',
+  }
+  

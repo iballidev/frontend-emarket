@@ -14,6 +14,7 @@
             <app-modal-trigger-button (triggerEvent)="openAddProductCategory($event)" [btnTitle]="btnTitle"></app-modal-trigger-button>
         </div>
     </div>
+    
     <table class="table table-striped table-hover table-sm fs-100">
         <thead class="table-dark">
             <tr>
@@ -36,7 +37,7 @@
                 <th scope="row">{{i+1}}.</th>
                 <td>
                     <div style="max-width: 30px; max-height: 30px; overflow: hidden;">
-                        <img [src]="category.featuredImg" alt="" class="img-fluid">
+                        <img [src]="category?.featuredImg" alt="" class="img-fluid">
                     </div>
                 </td>
                 <!-- <td>Silver stones arabic lace</td> -->

@@ -4,30 +4,33 @@
         <div class="fs-200 fw-bold text-accent-300">iballi2017@gmail (Admin)</div>
         <ul class="ps-0 list-style-none">
             <li>
-                <a [routerLink]="['/admin/dashboard']" routerLinkActive="router-link-active" >Dashboard</a>
+                <a [routerLink]="['/admin/dashboard']" routerLinkActive="router-link-active">Dashboard</a>
             </li>
             <li>
-                <a [routerLink]="['/admin/product-categories']" routerLinkActive="router-link-active" >Product categories</a>
+                <a [routerLink]="['/admin/product-categories']" routerLinkActive="router-link-active">Product
+                    categories</a>
             </li>
             <li>
-                <a [routerLink]="['/admin/products']" routerLinkActive="router-link-active" >Products</a>
+                <a [routerLink]="['/admin/products']" routerLinkActive="router-link-active">Products</a>
             </li>
             <li>
-                <a [routerLink]="['/admin/users']" routerLinkActive="router-link-active" >Users</a>
+                <a [routerLink]="['/admin/users']" routerLinkActive="router-link-active">Users</a>
             </li>
             <li>
-                <a [routerLink]="['/admin/orders']" routerLinkActive="router-link-active" >Orders</a>
+                <a [routerLink]="['/admin/orders']" routerLinkActive="router-link-active">Orders</a>
             </li>
             <li>
-                <a [routerLink]="['/admin/customers']" routerLinkActive="router-link-active" >Customers</a>
+                <a [routerLink]="['/admin/customers']" routerLinkActive="router-link-active">Customers</a>
             </li>
             <li>
-                <a [routerLink]="['/admin/ui-design']" routerLinkActive="router-link-active" >UI design</a>
+                <a [routerLink]="['/admin/ui-design']" routerLinkActive="router-link-active">UI design</a>
             </li>
         </ul>
     </div>
     <div class="main">
         <app-toolbar></app-toolbar>
-        <router-outlet></router-outlet>
+        <div class="mb-5">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 </div>

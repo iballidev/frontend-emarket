@@ -16,6 +16,7 @@ import { AddProductComponent } from './products/add-product/add-product.componen
 import { UpdateProductComponent } from './products/update-product/update-product.component';
 import { ProductDetailsComponent } from './products/product-details/product-details.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { IconsModule } from '../icons/icons.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     FormsModule,
     ReactiveFormsModule,
     NgMultiSelectDropDownModule.forRoot(),
+    IconsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

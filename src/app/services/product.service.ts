@@ -4,6 +4,7 @@ import { productUrl } from '../config/api';
 import { Observable, map } from 'rxjs';
 import { AuthService } from './auth.service';
 import { UserProfileService } from './user-profile.service';
+import { buildQueryParams } from '../helpers/buildQueryParams';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class ProductService {
     });
   }
 
-  getProductCategoryList(queryParams?: any): Observable<any> {
+  getProductList(queryParams?: any): Observable<any> {
     return this._http.get<any>(`${productUrl}/all${queryParams}`).pipe(
       map((response: any) => {
         console.log('response: ', response);
@@ -42,6 +43,7 @@ export class ProductService {
             return {
               id: data._id,
               title: data.title,
+              price: data.price,
               productImage: data.productImage,
               categoryUrl: data.title,
               createdBy: data.createdBy,
@@ -55,6 +57,10 @@ export class ProductService {
         };
       })
     );
+  }
+
+  getProductById(productId: string) {
+    return this._http.get<any>(`${productUrl}/${productId}`);
   }
 
   createNewProduct(Product: any) {
@@ -75,10 +81,44 @@ export class ProductService {
     );
   }
 
+  // updateProduct(Product: any, UserProfileId: string) {
+  updateProduct(Product: any, ProductId: string) {
+    console.log('Product: ', Product);
+    console.log('this.userProfile: ', this.userProfile.profile);
+    console.log('this.userProfile: ', this.userProfile.profile._id);
+    let userProfileId = this.userProfile.profile._id;
+
+    // console.log('ProductIdQuery: ', ProductIdQuery);
+
+    let prop = new FormData();
+    for (const key in Product) {
+      if (key === 'categories') {
+        /**Loop through the array value for categories and appending with the formData */
+        Product[key].forEach((element: any, index: any) => {
+          prop.append(`categories[${index}]`, element);
+        });
+      } else {
+        prop.append(key, Product[key]);
+      }
+    }
+
+    console.log('prop: ', prop);
+
+    // return this._http.patch<any>(
+    //   `${productUrl}/${encodeURI(ProductId)}/${encodeURI(userProfileId)}`,
+    //   prop
+    // );
+
+    return this._http.patch<any>(
+      `${productUrl}/${ProductId}/${userProfileId}`,
+      prop
+    );
+  }
+
   deleteProductById(queryParams?: any) {
-    console.warn(queryParams);
-    console.warn(queryParams.slice(4));
-    return this._http.delete<any>(`${productUrl}/${queryParams.slice(4)}`)
+    // console.warn(queryParams);
+    // console.warn(queryParams.slice(4));
+    return this._http.delete<any>(`${productUrl}/${queryParams.slice(4)}`);
   }
 }
 
