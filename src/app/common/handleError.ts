@@ -1,14 +1,19 @@
- const handleError = (errorResponse: Response) => {
+import { throwError } from 'rxjs';
+import { BadInputError } from './bad-input-error';
+import { AppError } from './app-error';
+import { NotFoundError } from './not-found-error';
 
-    switch (errorResponse?.status) {
-        case 400:
-            
-            break;
-    
-        default:
-            break;
-    }
+export const handleError = (errorResponse: Response) => {
+  if (errorResponse.status === 400)
+    return throwError(() => new BadInputError(errorResponse));
+
+  if (errorResponse.status === 404)
+    return throwError(() => new NotFoundError(errorResponse));
+
+  return throwError(() => new AppError(errorResponse));
 };
+
+
 
 // export const handleError = (errorResponse: HttpErrorResponse) => {
 //     if (errorResponse.error instanceof ErrorEvent) {

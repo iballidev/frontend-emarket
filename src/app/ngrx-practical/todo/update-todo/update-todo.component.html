@@ -1,0 +1,66 @@
+<!-- <p>update-todo works!</p> -->
+
+<form
+  #updateTodoForm="ngForm"
+  (ngSubmit)="updateTodoForm.valid && updateTodo()"
+>
+  <div class="modal-header">
+    <h4 class="modal-title">Update todo</h4>
+    <!-- <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    ></button> -->
+    <button type="button" class="d-block" (click)="_close()">Close</button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="title" class="form-label">title</label>
+      <input
+        type="text"
+        class="form-control"
+        name="title"
+        id="title"
+        [ngClass]="{ 'is-invalid': title?.touched && title?.invalid }"
+        [(ngModel)]="model.title"
+        #title="ngModel"
+        required
+      />
+      <small id="titleErrorMsg" class="form-text text-danger invalid-feedback"
+        >Title is required.</small
+      >
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">description</label>
+      <textarea
+        name=""
+        id="description"
+        cols="30"
+        rows="6"
+        class="form-control"
+        name="description"
+        [(ngModel)]="model.description"
+        #description="ngModel"
+      ></textarea>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-between">
+    <!-- <button type="submit" class="btn btn-outline-dark"
+            [disabled]="updateTodoForm.invalid || validationError">Create</button> -->
+    <button
+      type="submit"
+      class="btn btn-outline-dark"
+      [disabled]="updateTodoForm.invalid"
+    >
+      Save
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="activeModal.close('Close click')"
+    >
+      Cancel
+    </button>
+  </div>
+</form>

@@ -11,6 +11,7 @@ export const userProfileUrl = baseUrl + '/user-profile';
 export const previewFileUrl = baseUrl + '/preview-file';
 export const logoutUrl = baseUrl + '/logout';
 export const countryListUrl = baseUrl + '/country-list';
+export const todoUrl = baseUrl + '/todo';
 // export const productsUrl = baseUrl + '/products';
 // export const cartUrl = baseUrl + '/cart';
 // export const wishlistUrl = baseUrl + '/wishlist';

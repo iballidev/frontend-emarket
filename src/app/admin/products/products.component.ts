@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppError } from 'src/app/common/app-error';
+import { NotFoundError } from 'src/app/common/not-found-error';
 import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
 import { FilterDropdown } from 'src/app/models/enums/filter';
 import { ProductService } from 'src/app/services/product.service';
@@ -103,17 +105,30 @@ export class ProductsComponent implements OnInit {
       pageNumber: queryParams.pageNumber,
       searchTerm: queryParams.searchTerm,
     };
-    this._productSvc.getProductList(buildQueryParams(userQuery)).subscribe({
+    // this._productSvc.getProductList(buildQueryParams(userQuery)).subscribe({
+    //   next: (response: any) => {
+    //     if (response) {
+    //       this.products = response.products;
+    //       this.pageNumber = response.pageNumber;
+    //       this.pageSize = response.pageSize;
+    //       this.totalCount = response.count;
+    //     }
+    //   },
+    //   error: (err: any) => {
+    //     console.error('Error: ', err);
+    //   },
+    // });
+
+    this._productSvc.getAll(`/all${buildQueryParams(userQuery)}`).subscribe({
       next: (response: any) => {
+        console.log('response: ', response);
         if (response) {
+          console.log('response: ', response);
           this.products = response.products;
           this.pageNumber = response.pageNumber;
           this.pageSize = response.pageSize;
           this.totalCount = response.count;
         }
-      },
-      error: (err: any) => {
-        console.error('Error: ', err);
       },
     });
   }
@@ -127,21 +142,19 @@ export class ProductsComponent implements OnInit {
       pageSize: this.pageSize,
       pageNumber: this.pageNumber,
     };
-    // this._productCategorySvc.getProductCategoryList(buildQueryParams(userQuery)).subscribe({
-    this._productSvc.getProductList(buildQueryParams(userQuery)).subscribe({
-      next: (response) => {
-        if (response) {
-          console.log('response: ', response);
-          this.products = response.products;
-          this.pageNumber = response.pageNumber;
-          this.pageSize = response.pageSize;
-          this.totalCount = response.count;
-        }
-      },
-      error: (err: any) => {
-        if (err) console.warn('Error: ', err);
-      },
-    });
+
+    this._productSvc
+      .getProducts(`/all${buildQueryParams(userQuery)}`)
+      .subscribe({
+        next: (response) => {
+          if (response) {
+            this.products = response.products;
+            this.pageNumber = response.pageNumber;
+            this.pageSize = response.pageSize;
+            this.totalCount = response.count;
+          }
+        },
+      });
   }
 
   AddProduct() {
@@ -149,18 +162,15 @@ export class ProductsComponent implements OnInit {
   }
 
   onDeleteProduct(productId: any) {
-    let userQuery = {
-      id: productId,
-    };
-    this._productSvc.deleteProductById(buildQueryParams(userQuery)).subscribe({
+    this._productSvc.deleteByResource(productId).subscribe({
       next: (value) => {
         if (value) {
-          console.log('response: ', value);
           this.getAllProducts();
         }
       },
-      error: (err) => {
-        console.error('error: ', err);
+      error: (err: AppError) => {
+        if (err instanceof NotFoundError) alert('item not found'!);
+        else throw err;
       },
     });
   }
@@ -169,7 +179,7 @@ export class ProductsComponent implements OnInit {
 
   pageChangeEvent($event: any) {
     this.pageNumber = $event;
-    console.log('Paginate: ', this.pageSize, this.pageNumber);
+
     const queryParams = {
       pageSize: this.pageSize,
       pageNumber: this.pageNumber,
@@ -178,18 +188,18 @@ export class ProductsComponent implements OnInit {
       pageSize: queryParams.pageSize,
       pageNumber: queryParams.pageNumber,
     };
-    this._productSvc.getProductList(buildQueryParams(userQuery)).subscribe({
-      next: (response: any) => {
-        if (response) {
-          this.products = response.products;
-          this.pageNumber = response.pageNumber;
-          this.pageSize = response.pageSize;
-          this.totalCount = response.count;
-        }
-      },
-      error: (err: any) => {
-        console.error('Error: ', err);
-      },
-    });
+
+    this._productSvc
+      .getProducts(`/all${buildQueryParams(userQuery)}`)
+      .subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.products = response.products;
+            this.pageNumber = response.pageNumber;
+            this.pageSize = response.pageSize;
+            this.totalCount = response.count;
+          }
+        },
+      });
   }
 }

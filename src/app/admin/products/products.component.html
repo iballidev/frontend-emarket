@@ -1,101 +1,155 @@
 <!-- <p>products works!</p> -->
 <div class="container-fluid">
-    <div class="d-flex align-items-center justify-content-between flex-wrap py-3">
-        <h1 class="fw-semi-bold fs-300">Products</h1>
-        <div>
-            <!-- <form class="d-flex ms-auto w-100 mt-3 mb-1 mt-lg-0 mb-lg-0 border rounded" role="search">
+  <div class="d-flex align-items-center justify-content-between flex-wrap py-3">
+    <h1 class="fw-semi-bold fs-300">Products</h1>
+    <div>
+      <!-- <form class="d-flex ms-auto w-100 mt-3 mb-1 mt-lg-0 mb-lg-0 border rounded" role="search">
                 <input class="form-control me-2 border-0" type="search" placeholder="Add new category"
                     aria-label="Search" />
                 <button class="btn d-flex align-items-center" type="submit" (click)="open()">
                     <i class="fas fa-plus me-2"></i>Save
                 </button>
             </form> -->
-            <app-modal-trigger-button (triggerEvent)="AddProduct()" [btnTitle]="btnTitle"
-                [btnType]="btnType"></app-modal-trigger-button>
-        </div>
+      <app-modal-trigger-button
+        (triggerEvent)="AddProduct()"
+        [btnTitle]="btnTitle"
+        [btnType]="btnType"
+      ></app-modal-trigger-button>
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-sm-9">
-            <form #SearchTermForm="ngForm" class="d-flex ms-auto w-100 my-2 mt-sm-0" role="search"
-                (ngSubmit)="onSearch(SearchTermForm)">
-                <input class="form-control me-2" type="search" placeholder="Search product" aria-label="Search"
-                    name="SearchTerm" [(ngModel)]="SearchTerm" />
-                <button class="btn" type="submit"> <i-feather name="Search" class="search-icon"></i-feather></button>
-            </form>
-        </div>
-        <div class="col-sm-3">
-            <form #FilterForm="ngForm">
-                <select class="form-select" style="height: 45px;" name="Filter"
-                [(ngModel)]="SortItem" (change)="sortReportListBy(FilterForm)">
-                    <option value="" selected="selected">Filter by:</option>
-                    <option *ngFor="let item of filterDropdownList" [value]="item">{{item}}</option>
-                </select>
-            </form>
-        </div>
+  <div class="row">
+    <div class="col-sm-9">
+      <form
+        #SearchTermForm="ngForm"
+        class="d-flex ms-auto w-100 my-2 mt-sm-0"
+        role="search"
+        (ngSubmit)="onSearch(SearchTermForm)"
+      >
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search product"
+          aria-label="Search"
+          name="SearchTerm"
+          [(ngModel)]="SearchTerm"
+        />
+        <button class="btn" type="submit">
+          <i-feather name="Search" class="search-icon"></i-feather>
+        </button>
+      </form>
     </div>
+    <div class="col-sm-3">
+      <form #FilterForm="ngForm">
+        <select
+          class="form-select"
+          style="height: 45px"
+          name="Filter"
+          [(ngModel)]="SortItem"
+          (change)="sortReportListBy(FilterForm)"
+        >
+          <option value="" selected="selected">Filter by:</option>
+          <option *ngFor="let item of filterDropdownList" [value]="item">
+            {{ item }}
+          </option>
+        </select>
+      </form>
+    </div>
+  </div>
 
+  <div class="table-responsive">
     <table class="table table-striped table-hover table-sm fs-100">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col" class="py-3">S/N</th>
-                <th scope="col" class="py-3">Featured image</th>
-                <th scope="col" class="py-3">Title</th>
-                <th scope="col" class="py-3">Price</th>
-                <th scope="col" class="py-3">Created by</th>
-                <th scope="col" class="py-3">Created date</th>
-                <th scope="col" class="py-3">Updated date</th>
-                <th scope="col" class="py-3">Updated by</th>
-                <th scope="col" class="py-3">Stock</th>
-                <th scope="col" class="py-3">isOutOfStock</th>
-                <th scope="col" class="py-3"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngIf="!products?.length">
-                <th scope="row" colspan="10" class="text-center py-5">
-                    No product
-                </th>
-            </tr>
-            <tr
-                *ngFor="let product of products | paginate: { itemsPerPage: pageSize, currentPage: pageNumber,  totalItems: totalCount  }; let i = index">
-                <th scope="row">{{i+1}}.</th>
-                <td>
-                    <div style="max-width: 30px; max-height: 30px; overflow: hidden;">
-                        <img [src]="product.productImage" alt="" class="img-fluid">
-                    </div>
-                </td>
-                <!-- <td>Silver stones arabic lace</td> -->
-                <td [title]="product.title">
-                    <div class="td-max-width">{{ product.title | titlecase }}</div>
-                </td>
-                <td>{{ product.price }}</td>
-                <td [title]="product.createdBy.firstName + ' '+ product.createdBy.lastName">
-                    <div class="td-max-width">{{
-                        product.createdBy.firstName | titlecase }}&nbsp;{{ product.createdBy.lastName | titlecase }}
-                    </div>
-                </td>
-                <td>{{ product.createdDate | date}}</td>
-                <td>{{ product.updatedDate | date}}</td>
-                <td [title]="product.createdBy.firstName + ' '+ product.createdBy.lastName">
-                    <div class="td-max-width">{{ product.updatedBy.firstName | titlecase}}&nbsp;{{
-                        product.updatedBy.lastName | titlecase }}</div>
-                </td>
-                <td>{{ product.stock}}</td>
-                <td>{{ product.isOutOfStock}}</td>
-                <td class="text-end">
-                    <div class="btn-group">
-                        <button class="btn-success btn btn-sm" [routerLink]="['/admin/update-product/',product.id ]">
-                            <i class="fas fa-pen"></i>
-                        </button>
-                        <button class="btn-danger btn btn-sm" (click)="onDeleteProduct(product.id)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" class="py-3">S/N</th>
+          <th scope="col" class="py-3">Featured image</th>
+          <th scope="col" class="py-3">Title</th>
+          <th scope="col" class="py-3">Price</th>
+          <th scope="col" class="py-3">Created by</th>
+          <th scope="col" class="py-3">Created date</th>
+          <th scope="col" class="py-3">Updated date</th>
+          <th scope="col" class="py-3">Updated by</th>
+          <th scope="col" class="py-3">Stock</th>
+          <th scope="col" class="py-3">isOutOfStock</th>
+          <th scope="col" class="py-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!products?.length">
+          <th scope="row" colspan="11" class="text-center py-5">No product</th>
+        </tr>
+        <tr
+          *ngFor="
+            let product of products
+              | paginate
+                : {
+                    itemsPerPage: pageSize,
+                    currentPage: pageNumber,
+                    totalItems: totalCount
+                  };
+            let i = index
+          "
+        >
+          <th scope="row">{{ i + 1 }}.</th>
+          <td>
+            <div style="max-width: 30px; max-height: 30px; overflow: hidden">
+              <img [src]="product.productImage" alt="" class="img-fluid" />
+            </div>
+          </td>
+          <!-- <td>Silver stones arabic lace</td> -->
+          <td [title]="product.title">
+            <div class="td-max-width">{{ product.title | titlecase }}</div>
+          </td>
+          <td>{{ product.price }}</td>
+          <td
+            [title]="
+              product.createdBy.firstName + ' ' + product.createdBy.lastName
+            "
+          >
+            <div class="td-max-width">
+              {{ product.createdBy.firstName | titlecase }}&nbsp;{{
+                product.createdBy.lastName | titlecase
+              }}
+            </div>
+          </td>
+          <td>{{ product.createdDate | date }}</td>
+          <td>{{ product.updatedDate | date }}</td>
+          <td
+            [title]="
+              product.createdBy.firstName + ' ' + product.createdBy.lastName
+            "
+          >
+            <div class="td-max-width">
+              {{ product.updatedBy.firstName | titlecase }}&nbsp;{{
+                product.updatedBy.lastName | titlecase
+              }}
+            </div>
+          </td>
+          <td>{{ product.stock }}</td>
+          <td>{{ product.isOutOfStock }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                class="btn-success btn btn-sm"
+                [routerLink]="['/admin/update-product/', product.id]"
+              >
+                <i class="fas fa-pen"></i>
+              </button>
+              <button
+                class="btn-danger btn btn-sm"
+                (click)="onDeleteProduct(product.id)"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
+  </div>
 
-    <pagination-controls (pageChange)="pageChangeEvent($event)" *ngIf="products?.length"></pagination-controls>
+  <pagination-controls
+    (pageChange)="pageChangeEvent($event)"
+    *ngIf="products?.length"
+  ></pagination-controls>
 </div>

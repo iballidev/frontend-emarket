@@ -1,45 +1,34 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { productUrl } from '../config/api';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { UserProfileService } from './user-profile.service';
 import { buildQueryParams } from '../helpers/buildQueryParams';
+import { AppError } from '../common/app-error';
+import { NotFoundError } from '../common/not-found-error';
+import { BadInputError } from '../common/bad-input-error';
+import { handleError } from '../common/handleError';
+import { DataService } from './data/data.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductService {
+export class ProductService extends DataService {
   userProfile: any;
-  constructor(
-    private _http: HttpClient,
-    private _authSvc: AuthService,
-    private _userProfileSvc: UserProfileService
-  ) {
-    this._userProfileSvc.getUserProfile().subscribe({
-      next: (response: any) => {
-        console.log('response: ', response);
-        this.userProfile = response;
-      },
-      error: (err) => {
-        if (err) {
-          console.error('Error: ', err);
-        }
-      },
-    });
+  constructor(private _http: HttpClient) {
+    super(productUrl, _http);
   }
 
-  getProductList(queryParams?: any): Observable<any> {
-    return this._http.get<any>(`${productUrl}/all${queryParams}`).pipe(
-      map((response: any) => {
-        console.log('response: ', response);
-        const body = response;
+  getProducts(resource: any) {
+    return this.getAll(resource).pipe(
+      map((dbData) => {
         return {
-          count: body.count,
-          message: body.message,
-          pageNumber: body.pageNumber,
-          pageSize: body.pageSize,
-          products: body.products.map((data: any) => {
+          count: dbData.count,
+          message: dbData.message,
+          pageNumber: dbData.pageNumber,
+          pageSize: dbData.pageSize,
+          products: dbData.products.map((data: any) => {
             return {
               id: data._id,
               title: data.title,
@@ -59,73 +48,54 @@ export class ProductService {
     );
   }
 
-  getProductById(productId: string) {
-    return this._http.get<any>(`${productUrl}/${productId}`);
-  }
+  createNewProduct(Payload: any) {
+    const product = Payload.product;
+    const params = Payload.params;
 
-  createNewProduct(Product: any) {
     let prop = new FormData();
-    for (const key in Product) {
+    for (const key in product) {
       if (key === 'categories') {
         /**Loop through the array value for categories and appending with the formData */
-        Product[key].forEach((element: any, index: any) => {
+        product[key].forEach((element: any, index: any) => {
           prop.append(`categories[${index}]`, element);
         });
       } else {
-        prop.append(key, Product[key]);
+        prop.append(key, product[key]);
       }
     }
-    return this._http.post(
-      `${productUrl}/${this.userProfile?.profile._id}`,
-      prop
-    );
+    return this._http
+      .post(`${productUrl}/${params}`, prop)
+      .pipe(catchError(handleError));
   }
 
-  // updateProduct(Product: any, UserProfileId: string) {
-  updateProduct(Product: any, ProductId: string) {
-    console.log('Product: ', Product);
-    console.log('this.userProfile: ', this.userProfile.profile);
-    console.log('this.userProfile: ', this.userProfile.profile._id);
-    let userProfileId = this.userProfile.profile._id;
+  
 
-    // console.log('ProductIdQuery: ', ProductIdQuery);
+  updateProduct(Payload: any) {    
+    const product = Payload.product;
+    const params = Payload.params;
 
     let prop = new FormData();
-    for (const key in Product) {
+    for (const key in product) {
       if (key === 'categories') {
         /**Loop through the array value for categories and appending with the formData */
-        Product[key].forEach((element: any, index: any) => {
+        product[key].forEach((element: any, index: any) => {
           prop.append(`categories[${index}]`, element);
         });
       } else {
-        prop.append(key, Product[key]);
+        prop.append(key, product[key]);
       }
     }
 
-    console.log('prop: ', prop);
-
-    // return this._http.patch<any>(
-    //   `${productUrl}/${encodeURI(ProductId)}/${encodeURI(userProfileId)}`,
-    //   prop
-    // );
-
-    return this._http.patch<any>(
-      `${productUrl}/${ProductId}/${userProfileId}`,
-      prop
-    );
-  }
-
-  deleteProductById(queryParams?: any) {
-    // console.warn(queryParams);
-    // console.warn(queryParams.slice(4));
-    return this._http.delete<any>(`${productUrl}/${queryParams.slice(4)}`);
+    return this._http
+      .patch<any>(`${productUrl}/${params}`, prop)
+      .pipe(catchError(handleError));
   }
 }
 
-interface Product {
-  title: string;
-  productImage: File;
-  description: string;
-  stock: number;
-  categories: string[];
-}
+// interface Product {
+//   title: string;
+//   productImage: File;
+//   description: string;
+//   stock: number;
+//   categories: string[];
+// }

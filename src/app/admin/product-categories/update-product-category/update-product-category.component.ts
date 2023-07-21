@@ -22,7 +22,7 @@ export class UpdateProductCategoryComponent implements OnInit {
   uploadedImage = '';
   userProfileId: any;
   previewUploadedFile: any;
-  btnTitle:string = "Add category";
+  btnTitle: string = 'Add category';
   constructor(
     private _productCategorySvc: ProductCategoryService,
     private _previewFileUploadSvc: PreviewFileUploadService,
@@ -34,12 +34,19 @@ export class UpdateProductCategoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getParams();
+    this.getUserProfile();
+  }
+
+  getParams() {
     this._route.params.subscribe((params: any) => {
       // this.categoryId = params.get('categoryId');
       this.categoryId = params.categoryId;
       this.getCategory(this.categoryId);
     });
+  }
 
+  getUserProfile() {
     this._userProfileSvc.getUserProfile().subscribe((data: any) => {
       this.userProfileId = data.profile._id;
     });
@@ -93,7 +100,7 @@ export class UpdateProductCategoryComponent implements OnInit {
   }
 
   update() {
-    const payload: any = {
+    const category: any = {
       title: this.model.Title,
       updatedDate: new Date(),
       categoryFeaturedImage: this.featuredImageFile,
@@ -101,8 +108,14 @@ export class UpdateProductCategoryComponent implements OnInit {
 
     this.loading = !this.loading;
 
+    let payload = {
+      categoryId: this.categoryId,
+      userProfile: this.userProfileId,
+      category: category,
+    };
+
     this._productCategorySvc
-      .updateProductCategory(this.categoryId, payload)
+      .updateProductCategory(payload)
       .subscribe((response: any) => {
         if (response) {
           this.loading = false;

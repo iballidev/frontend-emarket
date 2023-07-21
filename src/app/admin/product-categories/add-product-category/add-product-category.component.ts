@@ -1,6 +1,8 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AppError } from 'src/app/common/app-error';
+import { BadInputError } from 'src/app/common/bad-input-error';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
 import { UserProfileService } from 'src/app/services/user-profile.service';
 
@@ -14,11 +16,11 @@ export class AddProductCategoryComponent implements OnInit {
   @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
   model: any = {};
   rawImg!: File;
-  userProfile: any;
   file!: FormData;
   validationError!: boolean;
 
   createProductCategoryForm!: FormGroup;
+  userProfileId: any;
   constructor(
     public activeModal: NgbActiveModal,
     private _productCategorySvc: ProductCategoryService,
@@ -27,26 +29,8 @@ export class AddProductCategoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getUserProfile();
     this.buildForm();
-    this._userProfileSvc.getUserProfile().subscribe({
-      next: (response: any) => {
-        if (response) {
-          if (response && response?.profile)
-          
-          this.userProfile = response?.profile;
-        }
-      },
-      error: (error: Response) => {
-        if (error) {
-          if (error.status == 409) alert('Auth failed!');
-          else {
-            alert('An unexpected error occurred.');
-            // console.log('Error: ', error);
-          }
-        }
-      },
-    });
-
     this.checkValidation();
   }
 
@@ -78,20 +62,49 @@ export class AddProductCategoryComponent implements OnInit {
     };
   }
 
-  getUserProfile() {}
+  getUserProfile() {
+    this._userProfileSvc.getUserProfile().subscribe({
+      next: (response: any) => {
+        if (response) {
+          if (response && response?.profile)
+            this.userProfileId = response?.profile._id;
+        }
+      },
+      error: (error: Response) => {
+        if (error) {
+          if (error.status == 409) alert('Auth failed!');
+          else {
+            alert('An unexpected error occurred.');
+            // console.log('Error: ', error);
+          }
+        }
+      },
+    });
+  }
 
   createCategory() {
-    const payload = {
+    const category = {
       title: this.model.Title,
       categoryFeaturedImage: this.rawImg,
     };
-    this._productCategorySvc
-      .createProductCategory(this.userProfile._id, payload)
-      .subscribe((response: any) => {
+
+    let payload = {
+      category: category,
+      userProfileId: this.userProfileId,
+    };
+    this._productCategorySvc.createProductCategory(payload).subscribe({
+      next: (response: any) => {
         if (response) {
           // console.log('response: ', response);
           this.activeModal.dismiss('hello');
         }
-      });
+      },
+      error: (err: AppError) => {
+        console.log('Error: ', err);
+        if (err instanceof BadInputError)
+          return this.createProductCategoryForm.setErrors(err.OriginalError);
+        else throw err;
+      },
+    });
   }
 }

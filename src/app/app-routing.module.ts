@@ -29,6 +29,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./orders/orders.module').then((mod) => mod.OrdersModule),
   },
+  {
+    path: 'ngrx-practicals',
+    loadChildren: () =>
+      import('./ngrx-practical/ngrx-practical.module').then((mod) => mod.NgrxPracticalModule),
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
 

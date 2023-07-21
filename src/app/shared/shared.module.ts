@@ -16,6 +16,6 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
     IconsModule,
     NgxPaginationModule,
   ],
-  exports: [ToolbarComponent, ModalTriggerButtonComponent, NgxPaginationModule],
+  exports: [ToolbarComponent, ModalTriggerButtonComponent, NgxPaginationModule, NgBootstrapModule],
 })
 export class SharedModule {}

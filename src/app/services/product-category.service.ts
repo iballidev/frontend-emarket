@@ -1,43 +1,48 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProductCategory } from '../models/interfaces/product-category';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { productCategoryUrl } from '../config/api';
 import { UserProfileService } from './user-profile.service';
+import { DataService } from './data/data.service';
+import { handleError } from '../common/handleError';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductCategoryService {
+export class ProductCategoryService extends DataService {
   userProfile: any;
   // productCategoryUr =
-  constructor(
-    private _http: HttpClient,
-    private _userProfileSvc: UserProfileService
-  ) {
-    this._userProfileSvc.getUserProfile().subscribe({
-      next: (response: any) => {
-        console.log('response: ', response);
-        this.userProfile = response;
-      },
-      error: (err) => {
-        if (err) {
-          console.error('Error: ', err);
-        }
-      },
-    });
+  constructor(private _http: HttpClient) {
+    super(productCategoryUrl, _http);
+
+    // this._userProfileSvc.getUserProfile().subscribe({
+    //   next: (response: any) => {
+    //     console.log('response: ', response);
+    //     this.userProfile = response;
+    //   },
+    //   error: (err) => {
+    //     if (err) {
+    //       console.error('Error: ', err);
+    //     }
+    //   },
+    // });
   }
 
-  createProductCategory(UserProfileId: string, Payload: any) {
+  createProductCategory(Payload: any) {
+    let userProfileId = Payload.userProfileId;
+    let category = Payload.category;
     const formData = new FormData();
-    for (let prop in Payload) {
-      formData.append(prop, Payload[prop]);
+    for (let prop in category) {
+      formData.append(prop, category[prop]);
     }
-    return this._http.post(productCategoryUrl + '/' + UserProfileId, formData);
+    return this._http
+      .post(productCategoryUrl + '/' + userProfileId, formData)
+      .pipe(catchError(handleError));
   }
 
-  getProductCategoryList(queryParams?: any): Observable<any> {
-    return this._http.get<any>(`${productCategoryUrl}/all${queryParams}`).pipe(
+  getProductCategoryList(queryParams?: any) {
+    return this.getAll(`/all${queryParams}`).pipe(
       map((response: any) => {
         const body = response?.category;
         return {
@@ -57,25 +62,29 @@ export class ProductCategoryService {
             };
           }),
         };
-      })
+      }),
+      catchError(handleError)
     );
   }
 
   getProductCategory(CategoryId: string) {
-    return this._http.get<ProductCategory>(
-      `${productCategoryUrl}/${CategoryId}`
-    );
+    return this._http
+      .get<ProductCategory>(`${productCategoryUrl}/${CategoryId}`)
+      .pipe(catchError(handleError));
   }
 
-  updateProductCategory(CategoryId: string, Payload: any) {
+  updateProductCategory(Payload: any) {
+    let categoryId = Payload.categoryId;
+    let userProfile = Payload.userProfile;
+    let category = Payload.category;
+
     const formData = new FormData();
-    for (let prop in Payload) {
-      formData.append(prop, Payload[prop]);
+    for (let prop in category) {
+      formData.append(prop, category[prop]);
     }
-    return this._http.patch(
-      `${productCategoryUrl}/${CategoryId}/${this.userProfile.profile._id}`,
-      formData
-    );
+    return this._http
+      .patch(`${productCategoryUrl}/${categoryId}/${userProfile}`, formData)
+      .pipe(catchError(handleError));
   }
 
   deleteProductCategory(CategoryId: string) {

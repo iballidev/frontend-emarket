@@ -7,6 +7,7 @@ import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
 import { Product } from 'src/app/models/interfaces/product';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
 import { ProductService } from 'src/app/services/product.service';
+import { UserProfileService } from 'src/app/services/user-profile.service';
 
 @Component({
   selector: 'app-update-product',
@@ -24,15 +25,22 @@ export class UpdateProductComponent implements OnInit {
   dbProductImage!: string;
   dbProductTitle!: string;
   productId!: string;
+  userProfileId: any;
   constructor(
     private _productCategorySvc: ProductCategoryService,
     private formBuilder: FormBuilder,
     private _productSvc: ProductService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _userProfileSvc: UserProfileService
   ) {}
 
   ngOnInit(): void {
+    this._userProfileSvc.getUserProfile().subscribe({
+      next: (response: any) => {
+        this.userProfileId = response?.profile._id;
+      },
+    });
     this.getProductCategory();
     this.selectedItems = [];
     this.dropdownSettings = {
@@ -59,10 +67,9 @@ export class UpdateProductComponent implements OnInit {
   }
 
   getProductById(productId: any) {
-    this._productSvc.getProductById(productId).subscribe({
+    this._productSvc.getByResource(productId).subscribe({
       next: (value) => {
         if (value) {
-          console.log('response: ', value);
           let product = value?.product;
           this.dbProductImage = value?.product.productImage;
           this.dbProductTitle = value?.product.title;
@@ -77,9 +84,6 @@ export class UpdateProductComponent implements OnInit {
           this.fillForm(product);
         }
       },
-      error: (err) => {
-        console.error('error: ', err);
-      },
     });
   }
 
@@ -91,7 +95,7 @@ export class UpdateProductComponent implements OnInit {
       categories: [],
       isOutOfStock: null,
       productImage: null,
-      description: ['', Validators.required],
+      description: '',
     });
   }
 
@@ -153,7 +157,6 @@ export class UpdateProductComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           if (response && response.category) {
-            console.log('response: ', response);
             this.productCategoryList = response.category;
           }
         },
@@ -161,20 +164,14 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onSelectImage($event: any) {
-    console.log('$event: ', $event.target.files[0]);
-    console.log('title: ', this.title);
     let file = $event.target.files[0];
     this.updateProductForm.controls['productImage'].setValue(file);
-    console.log(' this.updateProductForm : ', this.updateProductForm.value);
   }
 
   submitProduct(data: any) {
-    console.log('data: ', data);
     this.arrangeCategoryList(this.selectedItems);
 
-    console.log(' this.updateProductForm : ', this.updateProductForm.value);
-
-    const payload: Product = {
+    const product: Product = {
       title: this.updateProductForm.value.title,
       price: this.updateProductForm.value.price,
       productImage: this.updateProductForm.value.productImage,
@@ -184,16 +181,15 @@ export class UpdateProductComponent implements OnInit {
       description: this.updateProductForm.value.description,
     };
 
-    this._productSvc.updateProduct(payload, this.productId).subscribe({
+    const payload: any = {
+      product: product,
+      params: `${this.productId}/${this.userProfileId}`,
+    };
+
+    this._productSvc.updateProduct(payload).subscribe({
       next: (response: any) => {
         if (response) {
-          console.log('response: ', response);
           this.router.navigate(['/admin/products']);
-        }
-      },
-      error: (err: any) => {
-        if (err) {
-          console.log('Error: ', err);
         }
       },
     });
@@ -205,7 +201,6 @@ export class UpdateProductComponent implements OnInit {
       arr.push(item.id);
     });
     this.updateProductForm.controls['categories'].setValue(arr);
-    console.log(' this.updateProductForm : ', this.updateProductForm.value);
   }
 
   back() {

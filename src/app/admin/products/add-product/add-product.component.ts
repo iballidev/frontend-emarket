@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { AppError } from 'src/app/common/app-error';
+import { BadInputError } from 'src/app/common/bad-input-error';
 import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
 import { Product } from 'src/app/models/interfaces/product';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
 import { ProductService } from 'src/app/services/product.service';
+import { UserProfileService } from 'src/app/services/user-profile.service';
 
 @Component({
   selector: 'app-add-product',
@@ -20,14 +23,17 @@ export class AddProductComponent implements OnInit {
   dropdownSettings: IDropdownSettings = {};
   isMultiSeletDropdownTouched: boolean = false;
   categoryList: any;
+  userProfileId: any;
   constructor(
     private _productCategorySvc: ProductCategoryService,
     private formBuilder: FormBuilder,
     private _productSvc: ProductService,
-    private router: Router
+    private router: Router,
+    private _userProfileSvc: UserProfileService
   ) {}
 
   ngOnInit(): void {
+    this.getUserProfile();
     this.getProductCategory();
     this.selectedItems = [];
     this.dropdownSettings = {
@@ -43,6 +49,13 @@ export class AddProductComponent implements OnInit {
     this.buildForm();
   }
 
+  getUserProfile() {
+    this._userProfileSvc.getUserProfile().subscribe({
+      next: (data: any) => {
+        this.userProfileId = data.profile._id;
+      },
+    });
+  }
   buildForm() {
     this.addProductForm = this.formBuilder.group({
       title: ['', Validators.required],
@@ -108,7 +121,6 @@ export class AddProductComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           if (response && response.category) {
-            console.log('response: ', response);
             this.productCategoryList = response.category;
           }
         },
@@ -116,27 +128,30 @@ export class AddProductComponent implements OnInit {
   }
 
   onSelectImage($event: any) {
-    console.log('$event: ', $event.target.files[0]);
-    console.log('title: ', this.title);
     let file = $event.target.files[0];
-    this.addProductForm.controls['productImage'].setValue(file);
-    console.log(' this.addProductForm : ', this.addProductForm.value);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.addProductForm.controls['productImage'].setValue(file);
+    };
   }
 
   submitProduct(data: any) {
-    console.log('data: ', data);
-    const payload: Product = { ...data };
+    const payload: any = {
+      product: { ...data },
+      params: this.userProfileId,
+    };
     this._productSvc.createNewProduct(payload).subscribe({
       next: (response: any) => {
         if (response) {
-          console.log('response: ', response);
           this.router.navigate(['/admin/products']);
         }
       },
-      error: (err) => {
-        if (err) {
-          console.log('Error: ', err);
-        }
+      error: (err: AppError) => {
+        if (err instanceof BadInputError)
+          return this.addProductForm.setErrors(err.OriginalError);
+        else throw err;
       },
     });
   }

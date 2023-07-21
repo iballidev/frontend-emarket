@@ -5,6 +5,9 @@ import { ProductCategoryService } from 'src/app/services/product-category.servic
 import { AddProductCategoryComponent } from './add-product-category/add-product-category.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
+import { UserProfileService } from 'src/app/services/user-profile.service';
+import { AppError } from 'src/app/common/app-error';
+import { NotFoundError } from 'rxjs';
 
 @Component({
   selector: 'app-product-categories',
@@ -17,10 +20,12 @@ export class ProductCategoriesComponent implements OnInit {
   pageNumber!: number;
   pageSize!: number;
   totalCount!: number;
+  userProfile: any;
   constructor(
     private _productCategorySvc: ProductCategoryService,
     config: NgbModalConfig,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private _userProfileSvc: UserProfileService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -40,19 +45,18 @@ export class ProductCategoriesComponent implements OnInit {
       pageSize: this.pageSize,
       pageNumber: this.pageNumber,
     };
-    this._productCategorySvc.getProductCategoryList(buildQueryParams(userQuery)).subscribe({
-      next: (response: any) => {
-        if (response) {
-          this.categoryList = response.category;
-          this.pageNumber = response.pageNumber;
-          this.pageSize = response.pageSize;
-          this.totalCount = response.count;
-        }
-      },
-      error: (err: any) => {
-        console.error('Error: ', err);
-      },
-    });
+    this._productCategorySvc
+      .getProductCategoryList(buildQueryParams(userQuery))
+      .subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.categoryList = response.category;
+            this.pageNumber = response.pageNumber;
+            this.pageSize = response.pageSize;
+            this.totalCount = response.count;
+          }
+        },
+      });
   }
 
   openAddProductCategory($event: boolean) {
@@ -72,8 +76,9 @@ export class ProductCategoriesComponent implements OnInit {
           this.getProductCategoryList();
         }
       },
-      error: (err: any) => {
-        console.error('Error: ', err);
+      error: (err: AppError) => {
+        if (err instanceof NotFoundError) alert('item not found'!);
+        else throw err;
       },
     });
   }
@@ -83,7 +88,7 @@ export class ProductCategoriesComponent implements OnInit {
     console.log('Paginate: ', this.pageSize, this.pageNumber);
     const queryParams = {
       pageSize: this.pageSize,
-      pageNumber: this.pageNumber
+      pageNumber: this.pageNumber,
     };
     let userQuery = {
       pageSize: queryParams.pageSize,
@@ -99,9 +104,6 @@ export class ProductCategoriesComponent implements OnInit {
             this.pageSize = response.pageSize;
             this.totalCount = response.count;
           }
-        },
-        error: (err: any) => {
-          console.error('Error: ', err);
         },
       });
   }

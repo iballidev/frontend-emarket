@@ -30,6 +30,11 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'orders', component: OrdersComponent },
+      // {
+      //   path: 'todo',
+      //   loadChildren: () =>
+      //     import('../ngrx-practical/todo/todo.module').then((mod) => mod.TodoModule),
+      // },
       {
         path: 'ui-design',
         loadChildren: () =>
