@@ -15,11 +15,12 @@ import * as fromTodoActions from '../store/todo.actions';
   styleUrls: ['./add-todo.component.scss'],
 })
 export class AddTodoComponent implements OnInit {
-  @Input() description!: any;
+  @Input() data!: any;
   model: any = {};
   validationError!: boolean;
   createTodoForm!: FormGroup;
   userProfileId: any;
+  description: any;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -30,7 +31,26 @@ export class AddTodoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.description = this.data;
     this.getUserProfile();
+
+    /**Closes the modal is set to true */
+    this._todoSvc.modalComponentSubj.subscribe((data: boolean) => {
+      if (data) {
+        this.activeModal.dismiss('add todo modal closed!');
+        this.activeModal.close('Close click');
+      }
+    });
+
+
+    /**Set errors */
+    this._todoSvc.setFormErrorSubj.subscribe((data: any) => {
+      if (data) {
+        this.createTodoForm.setErrors(data);
+      }
+    });
+
+    
   }
   getUserProfile() {
     this._userProfileSvc.getUserProfile().subscribe({
@@ -70,5 +90,9 @@ export class AddTodoComponent implements OnInit {
     //       else throw err;
     //     },
     //   });
+  }
+
+  modalComponent() {
+    this.store.dispatch(fromTodoActions.closeAddTodoModal());
   }
 }

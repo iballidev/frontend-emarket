@@ -65,7 +65,8 @@ export class TodoComponent implements OnInit {
 
   AddTodo($event: boolean) {
     if ($event) {
-      this._todoSvc.openAddTodoModal();
+      // this._todoSvc.openAddTodoModal();
+      this.store.dispatch(fromTodoActions.openAddTodoModal());
     }
   }
 

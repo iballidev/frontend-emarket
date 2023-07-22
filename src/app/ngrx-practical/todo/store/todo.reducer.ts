@@ -11,7 +11,7 @@ export interface TodoState extends EntityState<Todo> {
 
   error: any;
   isLoading: boolean;
-  isOpenUpdateDialog: boolean;
+  isOpenComponentModal: boolean;
 }
 
 export const adapter: EntityAdapter<Todo> = createEntityAdapter<Todo>();
@@ -21,7 +21,7 @@ export const initialState: TodoState = adapter.getInitialState({
 
   error: undefined,
   isLoading: false,
-  isOpenUpdateDialog: false,
+  isOpenComponentModal: false,
 });
 
 export const reducer = createReducer(
@@ -120,16 +120,15 @@ export const reducer = createReducer(
   }),
 
   /** OPEN DIALOG UPDATE TODO MODAL */
-  // on(TodoActions.openUpdateTodoModal, (state, action) => {
-  //   return {
-  //     ...state,
-  //     isOpenUpdateDialog: false,
-  //   };
-  // }),
+  on(TodoActions.openUpdateTodoModal, (state, action) => {
+    return {
+      ...state,
+    };
+  }),
   on(TodoActions.openUpdateTodoModalSuccess, (state, action) => {
     return {
       ...state,
-      isOpenUpdateDialog: true,
+      isOpenComponentModal: action.isOpenComponentModal,
     };
   }),
   on(TodoActions.openUpdateTodoModalFailure, (state, action) => {
@@ -140,10 +139,15 @@ export const reducer = createReducer(
   }),
 
   /** CLOSE DIALOG UPDATE TODO MODAL */
+  on(TodoActions.closeUpdateTodoModal, (state, action) => {
+    return {
+      ...state,
+    };
+  }),
   on(TodoActions.closeUpdateTodoModalSuccess, (state, action) => {
     return {
       ...state,
-      isOpenUpdateDialog: false,
+      isOpenComponentModal: action.isOpenComponentModal,
     };
   }),
   on(TodoActions.closeUpdateTodoModalFailure, (state, action) => {
@@ -151,11 +155,50 @@ export const reducer = createReducer(
       ...state,
       error: action.error,
     };
+  }),
+
+  /** OPEN DIALOG ADD TODO MODAL */
+  on(TodoActions.openAddTodoModal, (state, action) => {
+    return {
+      ...state,
+    };
+  }),
+  on(TodoActions.openAddTodoModalSuccess, (state, action) => {
+    return {
+      ...state,
+      isOpenComponentModal: action.isOpenComponentModal,
+    };
+  }),
+  on(TodoActions.openAddTodoModalFailure, (state, action) => {
+    return {
+      ...state,
+      error: action.error,
+    };
+  }),
+
+  /** CLOSE DIALOG ADD TODO MODAL */
+  on(TodoActions.closeAddTodoModal, (state, action) => {
+    return {
+      ...state,
+    };
+  }),
+  on(TodoActions.closeAddTodoModalSuccess, (state, action) => {
+    return {
+      ...state,
+      isOpenComponentModal: action.isOpenComponentModal,
+    };
+  }),
+  on(TodoActions.closeAddTodoModalFailure, (state, action) => {
+    return {
+      ...state,
+      error: action.error,
+    };
   })
+
   // on(TodoActions.closeUpdateTodoModal, (state, action) => {
   //   return {
   //     ...state,
-  //     isOpenUpdateDialog: false,
+  //     isOpenComponentModal: false,
   //   };
   // })
 

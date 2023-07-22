@@ -17,11 +17,12 @@ import * as fromTodoActions from '../store/todo.actions';
 })
 export class UpdateTodoComponent implements OnInit, AfterContentInit {
   @Input() description!: any;
-  @Input() todo!: any;
+  @Input() data!: any;
   model: any = {};
   validationError!: boolean;
   updateTodoForm!: FormGroup;
   userProfileId: any;
+  todo: any;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -32,7 +33,25 @@ export class UpdateTodoComponent implements OnInit, AfterContentInit {
   ) {}
 
   ngOnInit(): void {
+    this.todo = this.data;
     this.getUserProfile();
+
+    /**Closes the modal is set to true */
+    this._todoSvc.modalComponentSubj.subscribe((data: boolean) => {
+      if (data) {
+        this.activeModal.dismiss('update todo modal closed!');
+        this.activeModal.close('Close click');
+      }
+    });
+
+    
+    /**Set errors */
+    this._todoSvc.setFormErrorSubj.subscribe((data: any) => {
+      if (data) {
+        this.updateTodoForm.setErrors(data);
+      }
+    });
+
   }
 
   ngAfterContentInit(): void {
@@ -97,15 +116,7 @@ export class UpdateTodoComponent implements OnInit, AfterContentInit {
     //   });
   }
 
-  _close() {
-    // this._todoSvc.closeUpdateTodoModal();
-    this._todoSvc.closeUpdateTodoModal(true);
-    
-    this._todoSvc.closeUpdateTodoModalSubj.subscribe((data: boolean) => {
-      console.log('data: ', data);
-      if (data) {
-        this.activeModal.dismiss('update todo modal closed!');
-      }
-    });
+  modalComponent() {
+    this.store.dispatch(fromTodoActions.closeUpdateTodoModal());
   }
 }

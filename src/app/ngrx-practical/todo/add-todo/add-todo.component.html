@@ -5,7 +5,7 @@
     <div class="modal-header">
         <h4 class="modal-title">Create todo</h4>
         <button type="button" class="btn-close" aria-label="Close"
-            (click)="activeModal.dismiss('Cross click')"></button>
+            (click)="modalComponent()"></button>
     </div>
     <div class="modal-body">
         <p><small>{{ description }}</small></p>
@@ -26,7 +26,7 @@
             [disabled]="createTodoForm.invalid || validationError">Create</button> -->
             <button type="submit" class="btn btn-outline-dark"
                 [disabled]="createTodoForm.invalid">Create</button>
-        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modalComponent()">Cancel</button>
     </div>
 </form>
 

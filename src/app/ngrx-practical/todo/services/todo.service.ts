@@ -12,8 +12,10 @@ import { AddTodoComponent } from '../add-todo/add-todo.component';
   providedIn: 'root',
 })
 export class TodoService extends DataService {
-  public closeUpdateTodoModalSubj: Subject<any> = new Subject<any>();
+  // public closeUpdateTodoModalSubj: Subject<any> = new Subject<any>();
+  public modalComponentSubj: Subject<any> = new Subject<any>();
   userProfile: any;
+  public setFormErrorSubj: Subject<any> = new Subject<any>();
 
   constructor(
     private _http: HttpClient,
@@ -23,8 +25,11 @@ export class TodoService extends DataService {
     super(todoUrl, _http);
   }
 
+  sendFormErrorMsg(msg:any){
+    this.setFormErrorSubj.next(msg)
+  }
+
   createTodo(Payload: any) {
-    console.log('payload: ', Payload);
     return this._http.post(
       `${todoUrl}/create-todo-by-profile-id/${Payload.userProfileId}`,
       Payload.todo
@@ -47,24 +52,16 @@ export class TodoService extends DataService {
     return this.deleteByResource(TodoId);
   }
 
-  openUpdateTodoModal(todo: any) {
-    const modalRef = this.modalService.open(UpdateTodoComponent, {
+  openModalComponent(component: any, data?: any) {
+    const modalRef = this.modalService.open(component, {
       centered: true,
+      // fullscreen: true
     });
-    // const modalRef = this.modalService.open(UpdateTodoComponent, { fullscreen: true });
-    modalRef.componentInstance.todo = todo;
+    modalRef.componentInstance.data = data;
+    this.modalComponentSubj.next(true);
   }
 
-  closeUpdateTodoModal(data:boolean) {
-    // this.activeModal.dismiss('update todo modal closed!');
-    this.closeUpdateTodoModalSubj.next(data)
-  }
-
-  openAddTodoModal() {
-    const modalRef = this.modalService.open(AddTodoComponent, {
-      centered: true,
-    });
-    // const modalRef = this.modalService.open(AddTodoComponent, { fullscreen: true });
-    modalRef.componentInstance.description = 'Create a new todo';
+  closeModalComponent(close: boolean) {
+    this.modalComponentSubj.next(close);
   }
 }

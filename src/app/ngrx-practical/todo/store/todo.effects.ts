@@ -3,10 +3,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TodoService } from '../services/todo.service';
 import { Router } from '@angular/router';
 import * as fromTodoActions from './todo.actions';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { catchError, map, mergeMap, of, tap, throwError } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TodoState } from './todo.reducer';
+import { UpdateTodoComponent } from '../update-todo/update-todo.component';
+import { AddTodoComponent } from '../add-todo/add-todo.component';
+import { BadInputError } from 'src/app/common/bad-input-error';
 
 @Injectable()
 export class TodoEffects {
@@ -14,17 +17,14 @@ export class TodoEffects {
     return this.actions$.pipe(
       ofType(fromTodoActions.loadTodos),
       mergeMap((action: any) => {
-        console.log('action: ', action);
         return this._todoSvc.getAllTodosByProfileId(action.userProfileId).pipe(
           map((response: any) => {
-            console.group('todos effect: ', response);
             let todos = response.todos.map((todo: any) => {
               return {
                 ...todo,
                 id: todo._id,
               };
             });
-            console.log('todos effect: ', todos);
             return fromTodoActions.loadTodosSuccess({ todos });
           }),
           catchError((error: any) =>
@@ -42,17 +42,25 @@ export class TodoEffects {
       mergeMap((payload: any) =>
         this._todoSvc.createTodo(payload).pipe(
           map((data: any) => {
-            console.log('data: ', data);
             let item = {
               ...data.todo,
               id: data.todo._id,
             };
-            console.log('item: ', item);
             return fromTodoActions.addTodoSuccess({ todo: item });
           }),
           catchError((error) => of(fromTodoActions.addTodoFailure({ error }))),
+          catchError((err) => {
+            if (err instanceof BadInputError)
+              this._todoSvc.sendFormErrorMsg(err.OriginalError);
+            else throw err;
+
+            return throwError(() => err);
+          }),
           tap(($event) => {
-            console.log('$event: ', $event);
+            this._todoSvc.closeModalComponent(true);
+            return fromTodoActions.closeUpdateTodoModalSuccess({
+              isOpenComponentModal: false,
+            });
           })
         )
       )
@@ -63,34 +71,30 @@ export class TodoEffects {
     return this.actions$.pipe(
       ofType(fromTodoActions.updateTodo),
       mergeMap((payload: any) => {
-        console.log('payload: ', payload);
         return this._todoSvc.updateTodo(payload.payload).pipe(
           map((data: any) => {
-            console.log('data: ', data);
             let item = {
               ...data.todo,
               id: data.todo._id,
             };
-            console.log('item: ', item);
             return fromTodoActions.updateTodoSuccess({ todo: item });
           }),
           catchError((error) =>
             of(fromTodoActions.updateTodoFailure({ error }))
           ),
+          catchError((err) => {
+            if (err instanceof BadInputError)
+              this._todoSvc.sendFormErrorMsg(err.OriginalError);
+            else throw err;
+
+            return throwError(() => err);
+          }),
           tap(($response) => {
             if ($response) {
-              console.log('$response: ', $response);
-              // this.activeModal.dismiss('hello');
-              // this.activeModal.dismiss('hello');
-              // this.closeUpdateTodoModal$
-
-              // this.store.dispatch(fromTodoActions.closeUpdateTodoModal());
-
-              this._todoSvc.closeUpdateTodoModal(true);
+              this._todoSvc.closeModalComponent(true);
               fromTodoActions.closeUpdateTodoModalSuccess({
-                isOpenUpdateDialog: false,
+                isOpenComponentModal: false,
               });
-              console.log('this.activeModal: ', this.activeModal);
             }
           })
         );
@@ -118,40 +122,53 @@ export class TodoEffects {
       /** An EMPTY observable only emits completion. Replace with your own observable stream */
       // operator(() => EMPTY));
       map((action) => {
-        console.log('action: ', action);
-        // Simulate the asynchronous operation here (e.g., a delay or other logic)
-        // const simulatedData = { message: 'Simulated data from effect!' };
-        this._todoSvc.openUpdateTodoModal(action.todo);
+        this._todoSvc.openModalComponent(UpdateTodoComponent, action.todo);
         return fromTodoActions.openUpdateTodoModalSuccess({
-          isOpenUpdateDialog: true,
+          isOpenComponentModal: true,
         });
       })
     );
   });
 
   closeUpdateTodoModal$ = createEffect(() => {
-    console.log('closeUpdateTodoModal$');
     return this.actions$.pipe(
       ofType(fromTodoActions.closeUpdateTodoModal),
-      /** An EMPTY observable only emits completion. Replace with your own observable stream */
-      // operator(() => EMPTY));
       map((action) => {
-        console.log('action: ', action);
-        // Simulate the asynchronous operation here (e.g., a delay or other logic)
-        // const simulatedData = { message: 'Simulated data from effect!' };
-        // this._todoSvc.closeUpdateTodoModal(true);
+        this._todoSvc.closeModalComponent(true);
         return fromTodoActions.closeUpdateTodoModalSuccess({
-          isOpenUpdateDialog: false,
+          isOpenComponentModal: false,
+        });
+      })
+    );
+  });
+
+  openAddTodoModal$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromTodoActions.openAddTodoModal),
+      map((action) => {
+        this._todoSvc.openModalComponent(AddTodoComponent, 'Create a new todo');
+        return fromTodoActions.openAddTodoModalSuccess({
+          isOpenComponentModal: true,
+        });
+      })
+    );
+  });
+
+  closeAddTodoModal$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromTodoActions.closeAddTodoModal),
+      map((action) => {
+        this._todoSvc.closeModalComponent(true);
+        return fromTodoActions.closeAddTodoModalSuccess({
+          isOpenComponentModal: false,
         });
       })
     );
   });
 
   constructor(
-    private activeModal: NgbActiveModal,
     private actions$: Actions,
     private _todoSvc: TodoService,
-    private _router: Router,
-    private store: Store<TodoState>
+    private _router: Router
   ) {}
 }

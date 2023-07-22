@@ -75,12 +75,12 @@ export const deleteTodoFailure = createAction(
 /** OPEN DIALOG UPDATE TODO MODAL */
 export const openUpdateTodoModal = createAction(
   '[Todo Component] Open Update Todo Modal',
-  // props<{ isOpenUpdateDialog: boolean }>()
+  // props<{ isOpenComponentModal: boolean }>()
   props<{ todo: any }>()
 );
 export const openUpdateTodoModalSuccess = createAction(
   '[OpenUpdateDialog Effect] Open Update Todo Modal Success',
-  props<{ isOpenUpdateDialog: boolean }>()
+  props<{ isOpenComponentModal: boolean }>()
 );
 export const openUpdateTodoModalFailure = createAction(
   '[OpenUpdateDialog Effect] Open Update Todo Modal Failure',
@@ -93,18 +93,39 @@ export const closeUpdateTodoModal = createAction(
 );
 export const closeUpdateTodoModalSuccess = createAction(
   '[CloseUpdateDialog Effect] Close Update Todo Modal Success',
-  props<{ isOpenUpdateDialog: boolean }>()
+  props<{ isOpenComponentModal: boolean }>()
 );
 export const closeUpdateTodoModalFailure = createAction(
   '[CloseUpdateDialog Effect] Close Update Todo Modal Failure',
   props<{ error: any }>()
 );
 
-/** CLOSE DIALOG UPDATE TODO MODAL */
-// export const closeUpdateTodoModal = createAction(
-//   '[OpenUpdateDialog Effect] Delete Todo',
-//   props<{ isOpenUpdateDialog: boolean }>()
-// );
+/** OPEN DIALOG ADD TODO MODAL */
+export const openAddTodoModal = createAction(
+  '[Todo Component] Open Add Todo Modal'
+);
+export const openAddTodoModalSuccess = createAction(
+  '[OpenAddDialog Effect] Open Add Todo Modal Success',
+  props<{ isOpenComponentModal: boolean }>()
+);
+export const openAddTodoModalFailure = createAction(
+  '[OpenAddDialog Effect] Open Add Todo Modal Failure',
+  props<{ error: any }>()
+);
+
+/** CLOSE DIALOG ADD TODO MODAL */
+export const closeAddTodoModal = createAction(
+  '[Todo Component] Close Add Todo Modal'
+);
+export const closeAddTodoModalSuccess = createAction(
+  '[CloseAddDialog Effect] Close Add Todo Modal Success',
+  props<{ isOpenComponentModal: boolean }>()
+);
+export const closeAddTodoModalFailure = createAction(
+  '[CloseAddDialog Effect] Close Add Todo Modal Failure',
+  props<{ error: any }>()
+);
+
 
 // export const loadTodos = createAction(
 //   '[Todo/API] Load Todos',
