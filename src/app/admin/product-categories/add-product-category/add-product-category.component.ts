@@ -1,10 +1,13 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { AppError } from 'src/app/common/app-error';
 import { BadInputError } from 'src/app/common/bad-input-error';
 import { ProductCategoryService } from 'src/app/services/product-category.service';
 import { UserProfileService } from 'src/app/services/user-profile.service';
+import { ProductCategoryState } from 'src/app/stores/product-category-store/product-category.reducer';
+import * as fromProductCategoryActions from "../../../stores/product-category-store/product-category.actions";
 
 @Component({
   selector: 'app-add-product-category',
@@ -25,7 +28,8 @@ export class AddProductCategoryComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private _productCategorySvc: ProductCategoryService,
     private _userProfileSvc: UserProfileService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private store: Store<ProductCategoryState>
   ) {}
 
   ngOnInit(): void {
@@ -92,19 +96,21 @@ export class AddProductCategoryComponent implements OnInit {
       category: category,
       userProfileId: this.userProfileId,
     };
-    this._productCategorySvc.createProductCategory(payload).subscribe({
-      next: (response: any) => {
-        if (response) {
-          // console.log('response: ', response);
-          this.activeModal.dismiss('hello');
-        }
-      },
-      error: (err: AppError) => {
-        console.log('Error: ', err);
-        if (err instanceof BadInputError)
-          return this.createProductCategoryForm.setErrors(err.OriginalError);
-        else throw err;
-      },
-    });
+
+    this.store.dispatch(fromProductCategoryActions.addProductCategory({payload}))
+    // this._productCategorySvc.createProductCategory(payload).subscribe({
+    //   next: (response: any) => {
+    //     if (response) {
+    //       // console.log('response: ', response);
+    //       this.activeModal.dismiss('hello');
+    //     }
+    //   },
+    //   error: (err: AppError) => {
+    //     console.log('Error: ', err);
+    //     if (err instanceof BadInputError)
+    //       return this.createProductCategoryForm.setErrors(err.OriginalError);
+    //     else throw err;
+    //   },
+    // });
   }
 }

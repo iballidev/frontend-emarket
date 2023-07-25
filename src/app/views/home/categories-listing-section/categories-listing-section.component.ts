@@ -28,9 +28,9 @@ export class CategoriesListingSectionComponent implements OnInit {
   }
 }
 
-export interface Category {
-  id: string;
-  title: string;
-  featuredImg: string;
-  categoryUrl: string;
-}
+// export interface Category {
+//   id: string;
+//   title: string;
+//   featuredImg: string;
+//   categoryUrl: string;
+// }

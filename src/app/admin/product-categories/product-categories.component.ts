@@ -7,7 +7,15 @@ import { AuthService } from 'src/app/services/auth.service';
 import { buildQueryParams } from 'src/app/helpers/buildQueryParams';
 import { UserProfileService } from 'src/app/services/user-profile.service';
 import { AppError } from 'src/app/common/app-error';
-import { NotFoundError } from 'rxjs';
+import { NotFoundError, Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { ProductCategoryState } from 'src/app/stores/product-category-store/product-category.reducer';
+import * as fromProductCategoryActions from '../../stores/product-category-store/product-category.actions';
+import * as fromModalDialogControlActions from '../../stores/modal-dialog-control-store/modal-dialog-control.actions';
+import {
+  selectProductCategories,
+  selectProductCategoryInfo,
+} from 'src/app/stores/product-category-store/product-category.selectors';
 
 @Component({
   selector: 'app-product-categories',
@@ -16,16 +24,24 @@ import { NotFoundError } from 'rxjs';
 })
 export class ProductCategoriesComponent implements OnInit {
   categoryList!: ProductCategory[];
+  categoryList$: Observable<any> = this.store.pipe(
+    select(selectProductCategories)
+  );
+  productCategoryInfo$: Observable<any> = this.store.pipe(
+    select(selectProductCategoryInfo)
+  );
   btnTitle: string = 'Add category';
   pageNumber!: number;
   pageSize!: number;
+  // pageSize: number = 2;
   totalCount!: number;
   userProfile: any;
   constructor(
     private _productCategorySvc: ProductCategoryService,
     config: NgbModalConfig,
     private modalService: NgbModal,
-    private _userProfileSvc: UserProfileService
+    private _userProfileSvc: UserProfileService,
+    private store: Store<ProductCategoryState>
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -45,47 +61,70 @@ export class ProductCategoriesComponent implements OnInit {
       pageSize: this.pageSize,
       pageNumber: this.pageNumber,
     };
-    this._productCategorySvc
-      .getProductCategoryList(buildQueryParams(userQuery))
-      .subscribe({
-        next: (response: any) => {
-          if (response) {
-            this.categoryList = response.category;
-            this.pageNumber = response.pageNumber;
-            this.pageSize = response.pageSize;
-            this.totalCount = response.count;
-          }
-        },
-      });
-  }
 
-  openAddProductCategory($event: boolean) {
-    if ($event) {
-      const modalRef = this.modalService.open(AddProductCategoryComponent, {
-        centered: true,
-      });
-      // const modalRef = this.modalService.open(AddProductCategoryComponent, { fullscreen: true });
-      modalRef.componentInstance.description = 'Create a new product category';
-    }
-  }
+    this.store.dispatch(
+      fromProductCategoryActions.loadProductCategories({
+        queryParams: buildQueryParams(userQuery),
+      })
+    );
 
-  onDeleteCategory(CategoryId: string) {
-    this._productCategorySvc.deleteProductCategory(CategoryId).subscribe({
+    this.categoryList$.subscribe({
       next: (response: any) => {
         if (response) {
-          this.getProductCategoryList();
+          this.categoryList = response;
         }
       },
-      error: (err: AppError) => {
-        if (err instanceof NotFoundError) alert('item not found'!);
-        else throw err;
+    });
+
+    this.productCategoryInfo$.subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.pageNumber = response.pageNumber;
+          this.pageSize = response.pageSize;
+          this.totalCount = response.count;
+        }
       },
     });
   }
 
+  openAddProductCategory($event: boolean) {
+    const modalComponent = {
+      _component: AddProductCategoryComponent,
+      message: 'Create a new product category',
+    };
+    if ($event)
+      this.store.dispatch(
+        fromModalDialogControlActions.openModal({ modalComponent })
+      );
+
+    // if ($event) {
+    //   const modalRef = this.modalService.open(AddProductCategoryComponent, {
+    //     centered: true,
+    //   });
+    //   // const modalRef = this.modalService.open(AddProductCategoryComponent, { fullscreen: true });
+    //   modalRef.componentInstance.description = 'Create a new product category';
+    // }
+  }
+
+  onDeleteCategory(CategoryId: string) {
+    this.store.dispatch(
+      fromProductCategoryActions.deleteProductCategory({ id: CategoryId })
+    );
+    // this._productCategorySvc.deleteProductCategory(CategoryId).subscribe({
+    //   next: (response: any) => {
+    //     if (response) {
+    //       this.getProductCategoryList();
+    //     }
+    //   },
+    //   error: (err: AppError) => {
+    //     if (err instanceof NotFoundError) alert('item not found'!);
+    //     else throw err;
+    //   },
+    // });
+  }
+
   pageChangeEvent($event: any) {
     this.pageNumber = $event;
-    console.log('Paginate: ', this.pageSize, this.pageNumber);
     const queryParams = {
       pageSize: this.pageSize,
       pageNumber: this.pageNumber,
@@ -94,17 +133,21 @@ export class ProductCategoriesComponent implements OnInit {
       pageSize: queryParams.pageSize,
       pageNumber: queryParams.pageNumber,
     };
-    this._productCategorySvc
-      .getProductCategoryList(buildQueryParams(userQuery))
-      .subscribe({
-        next: (response: any) => {
-          if (response) {
-            this.categoryList = response.category;
-            this.pageNumber = response.pageNumber;
-            this.pageSize = response.pageSize;
-            this.totalCount = response.count;
-          }
-        },
-      });
+
+    this.store.dispatch(
+      fromProductCategoryActions.loadProductCategories({
+        queryParams: buildQueryParams(userQuery),
+      })
+    );
+
+    this.productCategoryInfo$.subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.pageNumber = response.pageNumber;
+          this.pageSize = response.pageSize;
+          this.totalCount = response.count;
+        }
+      },
+    });
   }
 }

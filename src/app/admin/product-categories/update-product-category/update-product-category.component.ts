@@ -5,6 +5,9 @@ import { PreviewFileUploadService } from 'src/app/services/preview-file-upload.s
 import { ProductCategoryService } from 'src/app/services/product-category.service';
 import { UserProfileService } from 'src/app/services/user-profile.service';
 import { AddProductCategoryComponent } from '../add-product-category/add-product-category.component';
+import { Store } from '@ngrx/store';
+import { ProductCategoryState } from 'src/app/stores/product-category-store/product-category.reducer';
+import * as fromProductCategoryActions from '../../../stores/product-category-store/product-category.actions';
 
 @Component({
   selector: 'app-update-product-category',
@@ -30,7 +33,8 @@ export class UpdateProductCategoryComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     config: NgbModalConfig,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private store: Store<ProductCategoryState>
   ) {}
 
   ngOnInit(): void {
@@ -114,15 +118,19 @@ export class UpdateProductCategoryComponent implements OnInit {
       category: category,
     };
 
-    this._productCategorySvc
-      .updateProductCategory(payload)
-      .subscribe((response: any) => {
-        if (response) {
-          this.loading = false;
-          console.log('response: ', response);
-          this._router.navigate(['/admin/product-categories']);
-        }
-      });
+    this.store.dispatch(
+      fromProductCategoryActions.updateProductCategory({ payload })
+    );
+
+    // this._productCategorySvc
+    //   .updateProductCategory(payload)
+    //   .subscribe((response: any) => {
+    //     if (response) {
+    //       this.loading = false;
+    //       console.log('response: ', response);
+    //       this._router.navigate(['/admin/product-categories']);
+    //     }
+    //   });
   }
 
   openAddProductCategory($event: boolean) {

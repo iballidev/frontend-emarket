@@ -17,6 +17,7 @@ import { UpdateProductComponent } from './products/update-product/update-product
 import { ProductDetailsComponent } from './products/product-details/product-details.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { IconsModule } from '../icons/icons.module';
+import { ProductCategoryStoreModule } from '../stores/product-category-store/product-category-store.module';
 
 @NgModule({
   declarations: [
@@ -40,8 +41,10 @@ import { IconsModule } from '../icons/icons.module';
     FormsModule,
     ReactiveFormsModule,
     NgMultiSelectDropDownModule.forRoot(),
-    IconsModule
+    IconsModule,
+    ProductCategoryStoreModule
   ],
+  exports:[ProductCategoriesComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AdminModule {}

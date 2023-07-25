@@ -1,0 +1,5 @@
+Entity:
+ng generate entity product-category --module=./product-category-store.module.ts --skip-tests=true
+
+Effect:
+ng generate effect product-category --skip-tests=true --module=product-category-store.module.ts

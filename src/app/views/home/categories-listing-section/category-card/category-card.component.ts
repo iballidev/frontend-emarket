@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Category } from '../categories-listing-section.component';
+import { ProductCategory } from 'src/app/models/interfaces/product-category';
 
 @Component({
   selector: 'app-category-card',
@@ -7,7 +7,7 @@ import { Category } from '../categories-listing-section.component';
   styleUrls: ['./category-card.component.scss'],
 })
 export class CategoryCardComponent implements OnInit {
-  @Input('category') category!: Category;
+  @Input('category') category!: ProductCategory;
   constructor() {}
 
   ngOnInit(): void {}

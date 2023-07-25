@@ -1,5 +1,5 @@
 export interface ProductCategory {
-  id: string;
+  id?: any;
   title: string;
   createdBy?: string;
   createdDate?: string;
